@@ -1,6 +1,6 @@
 /* Horario base de Darlene y Berny. Los cambios hechos en la página se guardan aparte y tienen prioridad. */
 window.HORARIO_BASE={
- "version": 4,
+ "version": 5,
  "days": [
   {
    "k": "lun",
@@ -548,10 +548,10 @@ window.HORARIO_BASE={
     },
     {
      "s": "16:15",
-     "e": "17:45",
+     "e": "18:15",
      "t": "Donas",
      "c": "donas",
-     "n": "Él hace las donas mientras ella cocina",
+     "n": "2 h. Él hace las donas mientras ella cocina",
      "w": "el"
     },
     {
@@ -564,70 +564,62 @@ window.HORARIO_BASE={
     },
     {
      "s": "17:15",
-     "e": "17:45",
+     "e": "18:15",
      "t": "Ayuda con las donas y empaca",
      "c": "donas",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "17:45",
-     "e": "17:55",
+     "s": "18:15",
+     "e": "18:25",
      "t": "Sopita",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "18:00",
-     "e": "20:00",
+     "s": "18:30",
+     "e": "20:15",
      "t": "Venta de donas",
      "c": "donas",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:00",
-     "e": "20:15",
+     "s": "20:15",
+     "e": "20:30",
      "t": "Regreso y guardar",
      "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:15",
-     "e": "20:35",
+     "s": "20:30",
+     "e": "20:50",
      "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:35",
-     "e": "20:55",
+     "s": "20:50",
+     "e": "21:10",
      "t": "Deja listos desayuno y colación de mañana",
      "c": "comida",
      "n": "Y arma las loncheras",
      "w": "dar"
     },
     {
-     "s": "20:35",
-     "e": "20:55",
+     "s": "20:50",
+     "e": "21:10",
      "t": "Trastes y mochilas al carro",
      "c": "casa",
      "n": "",
      "w": "el"
     },
     {
-     "s": "20:55",
-     "e": "21:15",
-     "t": "Tareas o repaso corto",
-     "c": "tareas",
-     "n": "",
-     "w": "ambos"
-    },
-    {
-     "s": "21:15",
+     "s": "21:10",
      "e": "21:30",
      "t": "Desconectar",
      "c": "colchon",
