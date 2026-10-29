@@ -134,6 +134,11 @@ async function flush() {
   try {
     while (pending.length) {
       const k = pending[0];
+      if (k === "config/deudas") {
+        // juntar con lo que haya guardado el otro celular antes de subir, para no borrar sus deudas nuevas
+        const r = await api("/api/data?key=config/deudas");
+        if (r && r.value && Array.isArray(r.value.items)) { const mg = mergeDeudas(deudas, r.value); deudas = mg.doc; LS.set("ns.deudas", deudas); }
+      }
       const value = k === "config/horario" ? horario : k === "config/deudas" ? deudas : k.startsWith("msg/") ? msgs[k.slice(4)] : entries[k];
       if (value) await api("/api/data", { method: "PUT", body: JSON.stringify({ key: k, value }) });
       pending.shift();
@@ -715,23 +720,36 @@ function viewAjustes() {
   const canSub = !!settings.pin && /^https?:$/.test(location.protocol) && host;
   const q = `who=${calWho}&k=${encodeURIComponent(settings.pin)}&modo=${settings.calModo}`;
   return `<div class="wrap">
-  <section id="calendario"><div class="sec-head"><h2>Calendario del celular</h2></div>
-    <div class="card"><h3>Agregar mi horario a mi calendario</h3>
-      <p class="msg">Cada quien lo hace en su celular. El teléfono te pide autorización para suscribirte y, desde ahí, tu horario aparece en la app Calendario y se actualiza solo cuando cambien algo aquí.</p>
+  <section id="calendario"><div class="sec-head"><h2>Calendario del celular</h2><div class="meta">Horario <span>${horario.u ? "editado el " + new Date(horario.u).toLocaleDateString("es-MX", { day: "numeric", month: "short" }) : "original"}</span></div></div>
+    <div class="card"><h3>Mi horario en mi calendario</h3>
+      <p class="msg">Cada quien lo hace una sola vez en su celular. El teléfono te pide autorización y desde ahí tu horario aparece en la app Calendario. Cada vez que cambien algo aquí, tu calendario se reemplaza completo con la versión nueva: no se duplican eventos y nada se encima (lo que pasa dentro de una clase, como el desayuno, va en la descripción de esa clase).</p>
       <div class="row2"><div class="field"><label>¿De quién?</label><div class="seg">${["dar", "el"].map((w) => `<button type="button" data-act="calwho" data-who="${w}" aria-pressed="${calWho === w}">${WHO[w]}</button>`).join("")}</div></div>
       <div class="field"><label>Qué incluir</label><div class="seg">${[["importante", "Lo importante"], ["todo", "Todo"]].map(([k, l]) => `<button type="button" data-act="calmodo" data-m="${k}" aria-pressed="${settings.calModo === k}">${l}</button>`).join("")}</div></div></div>
-      ${canSub ? `<div class="row2"><a class="btn primary" href="webcal://${host}/api/calendar?${q}">Suscribirme (iPhone y Mac)</a>
-        <button class="btn" type="button" data-act="copycal" data-url="https://${host}/api/calendar?${q}">Copiar enlace para Google Calendar</button></div>
-        <p class="msg">Android / Google Calendar: copia el enlace y, en calendar.google.com, ve a “Otros calendarios” → “+” → “Desde URL” y pégalo.</p>`
-      : `<p class="msg err">Para suscribirte primero escribe el código de pareja abajo (y la app debe estar publicada en Netlify).</p>`}
-      <div class="row2"><button class="btn ghost" type="button" data-act="dlics">Descargar .ics (se agrega una sola vez, no se actualiza)</button></div>
+      ${!canSub ? `<p class="msg err">Para suscribirte primero escribe el código de pareja abajo.</p>`
+        : (settings.calSub || {})[calWho]
+        ? `<p class="msg ok">${WHO[calWho]} ya está suscrit${calWho === "dar" ? "a" : "o"} en este celular. Se actualiza solo: no vuelvas a suscribirte o tendrás el calendario dos veces.</p>
+           <div class="row2"><a class="btn ghost" href="webcal://${host}/api/calendar?${q}" data-act="calsub" data-who="${calWho}">Volver a suscribirme (solo si lo borré)</a>
+           <button class="btn ghost" type="button" data-act="copycal" data-url="https://${host}/api/calendar?${q}">Copiar enlace para Google Calendar</button></div>`
+        : `<div class="row2"><a class="btn primary" href="webcal://${host}/api/calendar?${q}" data-act="calsub" data-who="${calWho}">Suscribirme (iPhone y Mac)</a>
+           <button class="btn" type="button" data-act="copycal" data-url="https://${host}/api/calendar?${q}">Copiar enlace para Google Calendar</button></div>
+           <p class="msg">Android / Google Calendar: copia el enlace y, en calendar.google.com, ve a “Otros calendarios” → “+” → “Desde URL” y pégalo.</p>`}
       <span class="msg" id="calmsg"></span>
+    </div>
+    <div class="card"><h3>Actualizar ahora</h3>
+      <ul class="steps">
+        <li><b class="tm">Al momento</b><span>En la app <b>Calendario</b> del iPhone toca <b>Calendarios</b> (abajo) y desliza la lista hacia abajo: se descarga la versión más reciente.</span></li>
+        <li><b class="tm">Más seguido</b><span>En <b>Ajustes del iPhone → Calendario → Cuentas → Obtener datos</b>, elige <b>Cada 15 minutos</b>. Así los cambios llegan solos casi enseguida.</span></li>
+        <li><b class="tm">Google</b><span>Google Calendar actualiza los calendarios suscritos por su cuenta, normalmente en unas horas; no se puede forzar.</span></li>
+      </ul>
+    </div>
+    <div class="card"><h3>¿Ves eventos repetidos o viejos?</h3>
+      <p class="msg">Pasa si antes se importó un archivo .ics o si se suscribieron dos veces. Para limpiarlo: en la app <b>Calendario → Calendarios</b>, toca la <b>(i)</b> junto a cada “Nuestra semana · …” que sobre y elige <b>Eliminar calendario</b>. Deja solo una suscripción por persona.</p>
     </div></section>
   <section><div class="sec-head"><h2>Este celular</h2></div>
     <div class="card"><h3>¿Quién usa este celular?</h3><p class="msg">Al abrir un día, se muestra primero tu sección.</p>
       <div class="seg">${["dar", "el"].map((w) => `<button type="button" data-act="me" data-who="${w}" aria-pressed="${settings.who === w}">${WHO[w]}</button>`).join("")}</div></div>
     <form class="card" data-form="pin"><h3>Código de pareja</h3>
-      <p class="msg">Es el mismo código en los dos celulares y el mismo que pusieron como <b>APP_PIN</b> en Netlify. Con él, lo que registra uno lo ve el otro.</p>
+      <p class="msg">Es el mismo código en los dos celulares y el mismo que pusieron como <b>APP_PIN</b> en Cloudflare. Con él, lo que registra uno lo ve el otro.</p>
       <div class="row2"><div class="field" style="flex:1"><label for="pin">Código</label><input id="pin" type="password" name="pin" value="${esc(settings.pin)}" autocomplete="off" placeholder="Su código secreto"></div>
       <button class="btn primary" type="submit">Guardar y probar</button></div><span class="msg ${ui.pinMsg ? ui.pinMsg[0] : ""}" id="pinmsg">${ui.pinMsg ? esc(ui.pinMsg[1]) : ""}</span></form></section>
   <section><div class="sec-head"><h2>Respaldo</h2></div>
@@ -782,11 +800,11 @@ document.addEventListener("click", async (ev) => {
   if (act === "bdel") { day(ui.semDay).blocks.splice(+t.dataset.i, 1); ui.edit = null; saveHorario(); return render(true); }
   if (act === "hreset") { $("#hconfirm").classList.add("on"); return; }
   if (act === "hresetok") { horario = clone(window.HORARIO_BASE); saveHorario(); ui.edit = null; return render(true); }
+  if (act === "calsub") { settings.calSub = Object.assign({}, settings.calSub, { [who]: true }); saveSettings(); setTimeout(() => render(true), 800); return; }
   if (act === "calwho") { settings.calWho = who; saveSettings(); return render(true); }
   if (act === "calmodo") { settings.calModo = t.dataset.m; saveSettings(); return render(true); }
   if (act === "me") { settings.who = who; ui.who = who; ui.tableWho = who; settings.calWho = who; saveSettings(); return render(true); }
   if (act === "copycal") { try { await navigator.clipboard.writeText(t.dataset.url); $("#calmsg").textContent = "Enlace copiado."; } catch (e) { $("#calmsg").textContent = t.dataset.url; } return; }
-  if (act === "dlics") { const w = settings.calWho || settings.who; download(`nuestra-semana-${w}.ics`, buildICS(horario, w, settings.calModo, WHO[w]), "text/calendar"); $("#calmsg").textContent = "Abre el archivo descargado para agregar los eventos."; return; }
   if (act === "backup") { download(`nuestra-semana-respaldo-${today()}.json`, JSON.stringify({ app: "nuestra-semana", v: 1, entries, horario, todoDone, msgs, deudas }, null, 1), "application/json"); $("#bkmsg").textContent = "Respaldo descargado."; return; }
   if (act === "wipe") { $("#wconfirm").classList.add("on"); return; }
   if (act === "wipeok") { entries = {}; pending = []; horario = clone(window.HORARIO_BASE); todoDone = []; msgs = {}; deudas = { items: [], u: 0 }; ["ns.entries", "ns.pending", "ns.horario", "ns.todo", "ns.msgs", "ns.deudas"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); render(true); return pull(); }

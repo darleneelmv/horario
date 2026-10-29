@@ -28,16 +28,34 @@ function buildICS(horario, who, modo, nombre) {
   const L = [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Nuestra semana//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     `X-WR-CALNAME:${txt("Nuestra semana · " + nombre)}`, "X-WR-TIMEZONE:America/Mexico_City",
-    "REFRESH-INTERVAL;VALUE=DURATION:PT6H", "X-PUBLISHED-TTL:PT6H",
+    "REFRESH-INTERVAL;VALUE=DURATION:PT1H", "X-PUBLISHED-TTL:PT1H",
     "BEGIN:VTIMEZONE", "TZID:America/Mexico_City", "BEGIN:STANDARD", "DTSTART:19700101T000000",
     "TZOFFSETFROM:-0600", "TZOFFSETTO:-0600", "TZNAME:CST", "END:STANDARD", "END:VTIMEZONE",
   ];
+  const toM = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
   horario.days.forEach((d, i) => {
-    d.blocks
+    // Sin traslapes: lo que pasa dentro de otra actividad (desayuno en clase, sopita en la venta)
+    // se agrega a la descripción de esa actividad; los traslapes parciales se recortan.
+    const lista = d.blocks
       .filter((b) => b.w === "ambos" || b.w === who)
       .filter((b) => !NUNCA.includes(b.c))
       .filter((b) => modo === "todo" || (IMPORTANTE.includes(b.c) && !/^(Regreso|Camino|Margen)/.test(b.t)))
-      .forEach((b) => {
+      .map((b) => ({ ...b, extra: [] }))
+      .sort((a, b) => toM(a.s) - toM(b.s) || (toM(b.e) - toM(b.s)) - (toM(a.e) - toM(a.s)));
+    const salida = [];
+    for (const b of lista) {
+      const padre = salida.find((p) => toM(p.s) <= toM(b.s) && toM(p.e) >= toM(b.e));
+      if (padre) { padre.extra.push(`${b.s}–${b.e} ${b.t}`); continue; }
+      const ult = salida[salida.length - 1];
+      if (ult && toM(b.s) < toM(ult.e)) {
+        // algo corto (una comida, un pendiente) que se cruza con otra actividad: va en su descripción
+        if (b.c === "comida" || toM(b.e) - toM(b.s) <= 30) { ult.extra.push(`${b.s}–${b.e} ${b.t}`); continue; }
+        b.s = ult.e; if (toM(b.e) <= toM(b.s)) continue;
+      }
+      salida.push(b);
+    }
+    salida.forEach((b) => {
+        b = { ...b, n: [b.n, ...b.extra].filter(Boolean).join("\n") };
         L.push("BEGIN:VEVENT",
           `UID:${who}-${d.k}-${b.s.replace(":", "")}-${slug(b.t)}@nuestra-semana`,
           `DTSTAMP:${stamp}`,
