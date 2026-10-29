@@ -11,7 +11,17 @@ Agenda de Darlene Bubucita y Berny Duducito: horario semanal, checklist diario d
 - **Guía**: meal prep del domingo y los cambios recomendados.
 - **Ajustes**: quién usa el celular, código de pareja, agregar el horario al calendario del celular y respaldos.
 
-## Publicar en Cloudflare Pages (gratis, recomendado)
+## Publicar como Cloudflare Worker (lo que está configurado)
+
+El repo ya trae `wrangler.jsonc` con el KV `agenda` conectado como `AGENDA`.
+
+1. En Cloudflare: **Workers & Pages → Create → Import a repository** → GitHub → `horario`. Deja los comandos que propone (deploy: `npx wrangler deploy`).
+2. En el Worker: **Settings → Variables and Secrets → Add** → Type **Secret**, nombre **`APP_PIN`**, valor: su código.
+3. Abre tu sitio (algo como `https://horario.<tu-cuenta>.workers.dev`).
+
+Cada cambio que se suba a GitHub se publica solo.
+
+## Publicar en Cloudflare Pages (alternativa)
 
 1. Crea una cuenta gratis en [dash.cloudflare.com](https://dash.cloudflare.com).
 2. **Workers & Pages → Create → Pages → Connect to Git** → GitHub → elige el repo `horario`.
@@ -63,7 +73,9 @@ public/                 la página (HTML, CSS, JS, iconos)
   horario-base.js       horario original
   app.js                la app
   ics.js                genera el calendario .ics
-functions/api/          servidor en Cloudflare Pages (data.js y calendar.js)
+worker/index.js         entrada del Cloudflare Worker (usa functions/api)
+wrangler.jsonc          configuración del Worker y su KV
+functions/api/          servidor en Cloudflare (data.js y calendar.js)
 netlify/functions/      servidor en Netlify (data.mjs y calendar.mjs)
 shared/                 horario original y generador del calendario, usados por los dos
 ```
