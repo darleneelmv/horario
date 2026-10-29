@@ -5,6 +5,9 @@
   "compatibility_date": "2025-09-01",
   // Conserva las variables puestas en el panel de Cloudflare (APP_PIN) al publicar desde GitHub.
   "keep_vars": true,
+  // Activa la dirección https://horario.<cuenta>.workers.dev
+  "workers_dev": true,
+  "preview_urls": false,
   "assets": { "directory": "./public", "binding": "ASSETS" },
   "kv_namespaces": [
     // AGENDA = el KV "agenda". El id está en Storage & Databases → KV → agenda.
