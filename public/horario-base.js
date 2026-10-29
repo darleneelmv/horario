@@ -1,6 +1,6 @@
 /* Horario base de Darlene y él. Los cambios hechos en la página se guardan aparte y tienen prioridad. */
 window.HORARIO_BASE={
- "version": 1,
+ "version": 2,
  "days": [
   {
    "k": "lun",
@@ -388,26 +388,18 @@ window.HORARIO_BASE={
     },
     {
      "s": "14:00",
-     "e": "14:15",
-     "t": "Regreso a casa",
-     "c": "personal",
-     "n": "",
-     "w": "dar"
-    },
-    {
-     "s": "14:15",
-     "e": "14:45",
-     "t": "Comida fuerte",
+     "e": "14:30",
+     "t": "Comida fuerte de la lonchera",
      "c": "comida",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "14:45",
-     "e": "15:30",
-     "t": "Tareas",
+     "s": "14:30",
+     "e": "16:00",
+     "t": "Tareas o proyectos mientras lo espera",
      "c": "tareas",
-     "n": "",
+     "n": "En la biblioteca. Salen juntos a las 4:00 para ahorrar gasolina",
      "w": "dar"
     },
     {
@@ -419,89 +411,89 @@ window.HORARIO_BASE={
      "w": "el"
     },
     {
-     "s": "15:30",
-     "e": "16:20",
-     "t": "Empieza las donas",
-     "c": "donas",
-     "n": "",
-     "w": "dar"
-    },
-    {
      "s": "16:00",
      "e": "16:15",
-     "t": "Regreso a casa",
+     "t": "Regreso a casa juntos",
      "c": "personal",
      "n": "",
-     "w": "el"
+     "w": "ambos"
     },
     {
      "s": "16:15",
-     "e": "17:15",
-     "t": "Sigue con las donas",
+     "e": "17:00",
+     "t": "Donas",
      "c": "donas",
-     "n": "",
+     "n": "Con el kit ya pesado desde el domingo",
+     "w": "dar"
+    },
+    {
+     "s": "16:15",
+     "e": "17:50",
+     "t": "Donas",
+     "c": "donas",
+     "n": "Sigue con las donas mientras ella cocina",
      "w": "el"
     },
     {
-     "s": "16:20",
-     "e": "16:50",
+     "s": "17:00",
+     "e": "17:30",
      "t": "Sopa y cena listas, trastes",
      "c": "comida",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "16:50",
-     "e": "17:15",
+     "s": "17:30",
+     "e": "17:50",
      "t": "Donas: empacar",
      "c": "donas",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "17:15",
-     "e": "17:25",
+     "s": "17:50",
+     "e": "18:00",
      "t": "Sopita",
      "c": "comida",
      "n": "Crema de calabacita",
      "w": "ambos"
     },
     {
-     "s": "17:25",
-     "e": "19:45",
+     "s": "18:00",
+     "e": "20:00",
      "t": "Venta de donas",
      "c": "donas",
-     "n": "",
+     "n": "Hoy empieza a las 6:00 porque llegan juntos a las 4:15",
      "w": "ambos"
     },
     {
-     "s": "19:45",
-     "e": "20:00",
+     "s": "20:00",
+     "e": "20:10",
      "t": "Regreso y guardar",
      "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:00",
-     "e": "20:20",
+     "s": "20:10",
+     "e": "20:30",
      "t": "Cena (ya estaba lista)",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:20",
-     "e": "20:35",
+     "s": "20:30",
+     "e": "20:50",
      "t": "Trastes y loncheras de mañana",
      "c": "casa",
      "n": "Pasen al refri lo de mañana",
      "w": "ambos"
     },
     {
-     "s": "20:35",
+     "s": "20:50",
      "e": "21:15",
-     "t": "Tareas",
+     "t": "Tareas o repaso corto",
      "c": "tareas",
      "n": "",
      "w": "ambos"
@@ -629,35 +621,27 @@ window.HORARIO_BASE={
     },
     {
      "s": "15:00",
-     "e": "15:15",
-     "t": "Regreso a casa",
-     "c": "personal",
-     "n": "",
-     "w": "dar"
-    },
-    {
-     "s": "15:15",
-     "e": "15:45",
-     "t": "Comida fuerte",
+     "e": "15:20",
+     "t": "Comida fuerte de la lonchera",
      "c": "comida",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "15:45",
-     "e": "16:15",
-     "t": "YouTube: guion y preparar la grabación",
-     "c": "youtube",
-     "n": "Luz, tripié, lista de tomas",
+     "s": "15:20",
+     "e": "16:00",
+     "t": "Tareas o proyectos mientras lo espera",
+     "c": "tareas",
+     "n": "Salen juntos a las 4:00 para ahorrar gasolina",
      "w": "dar"
     },
     {
      "s": "16:00",
      "e": "16:15",
-     "t": "Regreso a casa",
+     "t": "Regreso a casa juntos",
      "c": "personal",
      "n": "",
-     "w": "el"
+     "w": "ambos"
     },
     {
      "s": "16:15",

@@ -497,7 +497,8 @@ function bindChart() {
 // ------------------------------------------------------------ vista: GUÍA
 const TODO = [
   ["Turnos en las donas", "Mientras uno sigue con las donas, el otro deja lista la sopa y la cena, lava trastes y arma loncheras (o al revés). Al volver de vender solo calientan y cenan."],
-  ["Darlene arranca las donas; él se suma a las 4:15", "Lunes, martes y jueves él sale a las 4:00. Dejen pesados los secos y listo el glaseado: miércoles en la noche (jue a sáb) y domingo (lun y mar)."],
+  ["Salir juntos para ahorrar gasolina", "Martes, miércoles y viernes regresan juntos: Darlene usa la espera en la escuela para tareas o proyectos. Solo el jueves ella se va aparte, y el lunes no tiene clases."],
+  ["Darlene arranca las donas lunes y jueves", "Esos días ella llega antes y él se suma a las 4:15. Dejen pesados los secos y listo el glaseado: miércoles en la noche (jue a sáb) y domingo (lun y mar)."],
   ["Los huecos de él son su tarea y su YouTube", "Lunes 11 a 2, martes 1 a 3, miércoles 1 a 2, jueves 11 a 12 y viernes 9 a 10: unas 6 h con laptop en la biblioteca."],
   ["Lunes de Darlene: 3 h enfocadas en la mañana", "De 8:30 a 11:30, recién desayunada y sin celular. Después pone la lavadora, edita YouTube y hace tarea."],
   ["Miércoles: día libre de donas", "2:30 h juntos para YouTube y proyectos. Solo queda la limpieza de mascotas."],
@@ -515,7 +516,7 @@ function viewGuia() {
       <li><b class="tm">10:00</b><span>Verdura desinfectada y picada. Base de <b>sopa de verduras</b> (días A) y <b>crema de calabacita</b> (días B). La pasta se cuece aparte.</span></li>
       <li><b class="tm">11:00</b><span><b>Desayunos de huevo</b>: burritos con espinaca (A) y muffins de huevo con champiñón (B).</span></li>
       <li><b class="tm">11:30</b><span><b>Kits de licuado</b> en ziploc y <b>colaciones</b>: yogur con fruta en frascos, granola y almendras aparte.</span></li>
-      <li><b class="tm">12:00</b><span><b>Porcionar y etiquetar</b>. La comida fuerte de él de lunes a miércoles va en lonchera.</span></li>
+      <li><b class="tm">12:00</b><span><b>Porcionar y etiquetar</b>. En lonchera va la comida fuerte de él (lun a mié) y la de Darlene (mar y mié).</span></li>
     </ol><span class="scrib" aria-hidden="true">disciplina hoy</span></div>
     <div class="store">
       <div class="box"><span class="pillhead">Refri · lun a mié</span><ul><li>Comidas fuertes en tupper</li><li>Sopas y cremas</li><li>Desayunos de huevo</li><li>Yogures armados y ensaladas</li></ul></div>
