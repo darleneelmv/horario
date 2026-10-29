@@ -1,6 +1,6 @@
 // Copia del horario base (public/horario-base.js) para el calendario.
 export default {
- "version": 3,
+ "version": 4,
  "days": [
   {
    "k": "lun",
@@ -62,7 +62,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Berny: Push A (~65 min) · Darlene: glúteo + femoral (~55 min) + caminata inclinada 15 min",
+     "n": "Él: Push A (~65 min) · Darlene: glúteo + femoral (~55 min) + caminata inclinada 15 min",
      "w": "ambos"
     },
     {
@@ -187,7 +187,7 @@ export default {
     },
     {
      "s": "13:45",
-     "e": "15:00",
+     "e": "14:45",
      "t": "Tareas",
      "c": "tareas",
      "n": "",
@@ -202,6 +202,14 @@ export default {
      "w": "el"
     },
     {
+     "s": "14:45",
+     "e": "15:45",
+     "t": "Empieza las donas",
+     "c": "donas",
+     "n": "Masa con el kit ya pesado",
+     "w": "dar"
+    },
+    {
      "s": "15:00",
      "e": "16:00",
      "t": "Calidad",
@@ -210,11 +218,11 @@ export default {
      "w": "el"
     },
     {
-     "s": "15:00",
+     "s": "15:45",
      "e": "16:15",
-     "t": "Empieza las donas",
-     "c": "donas",
-     "n": "Con el kit ya pesado",
+     "t": "Prepara la comida fuerte",
+     "c": "comida",
+     "n": "30 min",
      "w": "dar"
     },
     {
@@ -236,79 +244,87 @@ export default {
     {
      "s": "16:45",
      "e": "17:15",
-     "t": "Sopa al termo y cena lista, trastes",
+     "t": "Prepara la sopita (al termo)",
      "c": "comida",
-     "n": "",
+     "n": "30 min",
      "w": "dar"
     },
     {
      "s": "16:45",
-     "e": "17:35",
-     "t": "Sigue con las donas",
+     "e": "17:45",
+     "t": "Sigue con las donas: freír y glasear",
      "c": "donas",
-     "n": "",
+     "n": "Mientras ella cocina",
      "w": "el"
     },
     {
      "s": "17:15",
-     "e": "17:35",
-     "t": "Donas: glasear y empacar",
-     "c": "donas",
-     "n": "",
+     "e": "17:45",
+     "t": "Prepara la cena",
+     "c": "comida",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
-     "s": "17:35",
-     "e": "17:45",
-     "t": "Salir a vender",
-     "c": "personal",
+     "s": "17:45",
+     "e": "17:55",
+     "t": "Empacar donas y salir a vender",
+     "c": "donas",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "17:45",
-     "e": "19:45",
+     "s": "18:00",
+     "e": "20:00",
      "t": "Venta de donas",
      "c": "donas",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "18:30",
-     "e": "18:45",
+     "s": "18:45",
+     "e": "19:00",
      "t": "Sopita en termo",
      "c": "comida",
      "n": "Durante la venta",
      "w": "ambos"
     },
     {
-     "s": "19:45",
-     "e": "20:00",
+     "s": "20:00",
+     "e": "20:15",
      "t": "Regreso y guardar",
      "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:00",
-     "e": "20:20",
-     "t": "Cena (ya estaba lista)",
+     "s": "20:15",
+     "e": "20:35",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:20",
-     "e": "20:40",
-     "t": "Trastes y loncheras de mañana",
-     "c": "casa",
-     "n": "Pasen al refri lo de mañana",
-     "w": "ambos"
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Deja listos desayuno y colación de mañana",
+     "c": "comida",
+     "n": "Y arma las loncheras",
+     "w": "dar"
     },
     {
-     "s": "20:40",
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Trastes y mochilas al carro",
+     "c": "casa",
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "20:55",
      "e": "21:15",
-     "t": "Tareas",
+     "t": "Tareas o repaso corto",
      "c": "tareas",
      "n": "",
      "w": "ambos"
@@ -316,7 +332,7 @@ export default {
     {
      "s": "21:15",
      "e": "21:30",
-     "t": "Ropa, mochilas al carro y desconectar",
+     "t": "Desconectar",
      "c": "colchon",
      "n": "",
      "w": "ambos"
@@ -383,7 +399,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Berny: Pull A (~65 min) · Darlene: espalda + abs (~50 min) + cardio suave 20 min",
+     "n": "Él: Pull A (~65 min) · Darlene: espalda + abs (~50 min) + cardio suave 20 min",
      "w": "ambos"
     },
     {
@@ -487,7 +503,7 @@ export default {
      "e": "14:30",
      "t": "Comida fuerte juntos en la escuela",
      "c": "comida",
-     "n": "De la lonchera",
+     "n": "De la lonchera que se armó la noche anterior",
      "w": "ambos"
     },
     {
@@ -524,39 +540,39 @@ export default {
     },
     {
      "s": "16:15",
-     "e": "17:00",
-     "t": "Donas",
-     "c": "donas",
-     "n": "",
+     "e": "16:45",
+     "t": "Prepara la sopita",
+     "c": "comida",
+     "n": "30 min",
      "w": "dar"
     },
     {
      "s": "16:15",
-     "e": "17:50",
+     "e": "17:45",
      "t": "Donas",
      "c": "donas",
-     "n": "Sigue con las donas mientras ella cocina",
+     "n": "Él hace las donas mientras ella cocina",
      "w": "el"
     },
     {
-     "s": "17:00",
-     "e": "17:30",
-     "t": "Sopa y cena listas, trastes",
+     "s": "16:45",
+     "e": "17:15",
+     "t": "Prepara la cena",
      "c": "comida",
-     "n": "",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
-     "s": "17:30",
-     "e": "17:50",
-     "t": "Donas: empacar",
+     "s": "17:15",
+     "e": "17:45",
+     "t": "Ayuda con las donas y empaca",
      "c": "donas",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "17:50",
-     "e": "18:00",
+     "s": "17:45",
+     "e": "17:55",
      "t": "Sopita",
      "c": "comida",
      "n": "",
@@ -572,30 +588,38 @@ export default {
     },
     {
      "s": "20:00",
-     "e": "20:10",
+     "e": "20:15",
      "t": "Regreso y guardar",
      "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:10",
-     "e": "20:30",
-     "t": "Cena (ya estaba lista)",
+     "s": "20:15",
+     "e": "20:35",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:30",
-     "e": "20:50",
-     "t": "Trastes y loncheras de mañana",
-     "c": "casa",
-     "n": "",
-     "w": "ambos"
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Deja listos desayuno y colación de mañana",
+     "c": "comida",
+     "n": "Y arma las loncheras",
+     "w": "dar"
     },
     {
-     "s": "20:50",
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Trastes y mochilas al carro",
+     "c": "casa",
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "20:55",
      "e": "21:15",
      "t": "Tareas o repaso corto",
      "c": "tareas",
@@ -605,7 +629,7 @@ export default {
     {
      "s": "21:15",
      "e": "21:30",
-     "t": "Ropa, mochilas al carro y desconectar",
+     "t": "Desconectar",
      "c": "colchon",
      "n": "",
      "w": "ambos"
@@ -672,7 +696,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Berny: Legs A + abs (~70 min) · Darlene: cuádriceps + glúteo (~55 min) + caminata 15 min",
+     "n": "Él: Legs A + abs (~70 min) · Darlene: cuádriceps + glúteo (~55 min) + caminata 15 min",
      "w": "ambos"
     },
     {
@@ -806,30 +830,62 @@ export default {
     {
      "s": "16:15",
      "e": "16:45",
+     "t": "Prepara la comida fuerte",
+     "c": "comida",
+     "n": "30 min",
+     "w": "dar"
+    },
+    {
+     "s": "16:15",
+     "e": "16:45",
+     "t": "Limpiar desechos de mascotas (1ª parte)",
+     "c": "casa",
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "16:45",
+     "e": "17:15",
      "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "16:45",
+     "s": "17:15",
      "e": "17:45",
-     "t": "Limpiar desechos de las mascotas",
+     "t": "Limpiar desechos de mascotas (2ª parte)",
      "c": "casa",
-     "n": "Los dos, 1 h",
-     "w": "ambos"
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "17:15",
+     "e": "18:15",
+     "t": "Prepara sopita y cena",
+     "c": "comida",
+     "n": "30 min cada una; la cena solo se calienta",
+     "w": "dar"
     },
     {
      "s": "17:45",
      "e": "20:00",
      "t": "Día libre: YouTube y proyectos",
      "c": "youtube",
-     "n": "Grabar, editar, ideas de contenido, redes, la empresa o cualquier pendiente",
-     "w": "ambos"
+     "n": "Grabar, editar, ideas, redes",
+     "w": "el"
     },
     {
-     "s": "18:30",
-     "e": "18:45",
+     "s": "18:15",
+     "e": "20:00",
+     "t": "Día libre: YouTube y proyectos",
+     "c": "youtube",
+     "n": "Grabar, editar, ideas, redes, la empresa",
+     "w": "dar"
+    },
+    {
+     "s": "18:45",
+     "e": "19:00",
      "t": "Sopita",
      "c": "comida",
      "n": "Pausa en el día libre",
@@ -838,17 +894,17 @@ export default {
     {
      "s": "20:00",
      "e": "20:25",
-     "t": "Cena",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
-     "n": "Día A: huevo y frijoles ya cocidos, 5 min",
+     "n": "",
      "w": "ambos"
     },
     {
      "s": "20:25",
      "e": "20:45",
-     "t": "Trastes y loncheras",
-     "c": "casa",
-     "n": "",
+     "t": "Deja listos desayuno y colación de mañana",
+     "c": "comida",
+     "n": "Y arma las loncheras",
      "w": "dar"
     },
     {
@@ -937,7 +993,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Berny: Push B (~70 min) · Darlene: hombro, tríceps y bíceps (~60 min) + intervalos 10 min",
+     "n": "Él: Push B (~70 min) · Darlene: hombro, tríceps y bíceps (~60 min) + intervalos 10 min",
      "w": "ambos"
     },
     {
@@ -1078,10 +1134,10 @@ export default {
     },
     {
      "s": "14:45",
-     "e": "15:00",
-     "t": "Margen",
-     "c": "colchon",
-     "n": "",
+     "e": "15:45",
+     "t": "Empieza las donas",
+     "c": "donas",
+     "n": "Masa con el kit ya pesado",
      "w": "dar"
     },
     {
@@ -1093,11 +1149,11 @@ export default {
      "w": "el"
     },
     {
-     "s": "15:00",
+     "s": "15:45",
      "e": "16:15",
-     "t": "Empieza las donas",
-     "c": "donas",
-     "n": "",
+     "t": "Prepara la comida fuerte",
+     "c": "comida",
+     "n": "30 min",
      "w": "dar"
     },
     {
@@ -1119,87 +1175,103 @@ export default {
     {
      "s": "16:45",
      "e": "17:15",
-     "t": "Sopa al termo y cena lista, trastes",
+     "t": "Prepara la sopita (al termo)",
      "c": "comida",
-     "n": "",
+     "n": "30 min",
      "w": "dar"
     },
     {
      "s": "16:45",
-     "e": "17:35",
-     "t": "Sigue con las donas",
+     "e": "17:45",
+     "t": "Sigue con las donas: freír y glasear",
      "c": "donas",
-     "n": "",
+     "n": "Mientras ella cocina",
      "w": "el"
     },
     {
      "s": "17:15",
-     "e": "17:35",
-     "t": "Donas: empacar",
-     "c": "donas",
-     "n": "",
+     "e": "17:45",
+     "t": "Prepara la cena",
+     "c": "comida",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
-     "s": "17:35",
-     "e": "17:45",
-     "t": "Salir a vender",
-     "c": "personal",
+     "s": "17:45",
+     "e": "17:55",
+     "t": "Empacar donas y salir a vender",
+     "c": "donas",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "17:45",
-     "e": "19:45",
+     "s": "18:00",
+     "e": "20:00",
      "t": "Venta de donas",
      "c": "donas",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "18:30",
-     "e": "18:45",
+     "s": "18:45",
+     "e": "19:00",
      "t": "Sopita en termo",
      "c": "comida",
      "n": "Durante la venta",
      "w": "ambos"
     },
     {
-     "s": "19:45",
-     "e": "20:00",
+     "s": "20:00",
+     "e": "20:15",
      "t": "Regreso y guardar",
      "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:00",
-     "e": "20:20",
-     "t": "Cena (ya estaba lista)",
+     "s": "20:15",
+     "e": "20:35",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "20:20",
-     "e": "20:40",
-     "t": "Trastes y loncheras de mañana",
-     "c": "casa",
-     "n": "Pasen al refri lo de mañana",
-     "w": "ambos"
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Deja listos desayuno y colación de mañana",
+     "c": "comida",
+     "n": "Y arma las loncheras",
+     "w": "dar"
     },
     {
-     "s": "20:40",
+     "s": "20:35",
+     "e": "20:55",
+     "t": "Trastes y mochilas al carro",
+     "c": "casa",
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "20:55",
+     "e": "21:15",
+     "t": "Repaso corto o descanso",
+     "c": "tareas",
+     "n": "",
+     "w": "dar"
+    },
+    {
+     "s": "20:55",
      "e": "21:15",
      "t": "YouTube: subir el video o un short",
      "c": "youtube",
      "n": "",
-     "w": "ambos"
+     "w": "el"
     },
     {
      "s": "21:15",
      "e": "21:30",
-     "t": "Ropa, mochilas al carro y desconectar",
+     "t": "Desconectar",
      "c": "colchon",
      "n": "",
      "w": "ambos"
@@ -1266,7 +1338,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Berny: Pull B (~65 min) · Darlene: pierna ligera (~50 min) + caminata 10–15 min",
+     "n": "Él: Pull B (~65 min) · Darlene: pierna ligera (~50 min) + caminata 10–15 min",
      "w": "ambos"
     },
     {
@@ -1392,39 +1464,55 @@ export default {
     {
      "s": "14:15",
      "e": "14:45",
+     "t": "Prepara la comida fuerte",
+     "c": "comida",
+     "n": "30 min",
+     "w": "dar"
+    },
+    {
+     "s": "14:15",
+     "e": "14:45",
+     "t": "Empieza las donas",
+     "c": "donas",
+     "n": "Masa con el kit ya pesado",
+     "w": "el"
+    },
+    {
+     "s": "14:45",
+     "e": "15:15",
      "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "14:45",
+     "s": "15:15",
      "e": "15:45",
-     "t": "Donas",
-     "c": "donas",
-     "n": "",
+     "t": "Prepara la sopita",
+     "c": "comida",
+     "n": "30 min",
      "w": "dar"
     },
     {
-     "s": "14:45",
+     "s": "15:15",
      "e": "17:00",
-     "t": "Donas",
+     "t": "Donas: freír y glasear",
      "c": "donas",
-     "n": "Sigue con las donas mientras ella cocina",
+     "n": "Mientras ella cocina",
      "w": "el"
     },
     {
      "s": "15:45",
      "e": "16:15",
-     "t": "Deja lista la sopa y la cena",
+     "t": "Prepara la cena",
      "c": "comida",
-     "n": "",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
      "s": "16:15",
      "e": "17:00",
-     "t": "Trastes y luego empacar donas",
+     "t": "Ayuda con las donas y empaca",
      "c": "donas",
      "n": "",
      "w": "dar"
@@ -1456,7 +1544,7 @@ export default {
     {
      "s": "20:00",
      "e": "20:20",
-     "t": "Cena (ya estaba lista)",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
@@ -1464,10 +1552,18 @@ export default {
     {
      "s": "20:20",
      "e": "20:35",
+     "t": "Deja lista la colación del sábado",
+     "c": "comida",
+     "n": "El desayuno del sábado se hace en el momento",
+     "w": "dar"
+    },
+    {
+     "s": "20:20",
+     "e": "20:35",
      "t": "Trastes y recoger",
      "c": "casa",
      "n": "",
-     "w": "ambos"
+     "w": "el"
     },
     {
      "s": "20:35",
@@ -1584,16 +1680,40 @@ export default {
     },
     {
      "s": "12:30",
-     "e": "13:45",
+     "e": "13:15",
      "t": "YouTube: grabar o editar (o tareas)",
      "c": "youtube",
      "n": "",
-     "w": "ambos"
+     "w": "dar"
+    },
+    {
+     "s": "12:30",
+     "e": "13:15",
+     "t": "YouTube: grabar o editar (o tareas)",
+     "c": "youtube",
+     "n": "",
+     "w": "el"
+    },
+    {
+     "s": "13:15",
+     "e": "13:45",
+     "t": "Prepara la comida fuerte",
+     "c": "comida",
+     "n": "30 min",
+     "w": "dar"
+    },
+    {
+     "s": "13:15",
+     "e": "13:45",
+     "t": "Sigue con YouTube o descansa",
+     "c": "youtube",
+     "n": "",
+     "w": "el"
     },
     {
      "s": "13:45",
      "e": "14:15",
-     "t": "Comida fuerte",
+     "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
      "w": "ambos"
@@ -1608,8 +1728,8 @@ export default {
     },
     {
      "s": "15:00",
-     "e": "16:00",
-     "t": "Donas",
+     "e": "15:30",
+     "t": "Empieza las donas con él",
      "c": "donas",
      "n": "",
      "w": "dar"
@@ -1619,21 +1739,29 @@ export default {
      "e": "17:00",
      "t": "Donas",
      "c": "donas",
-     "n": "Sigue con las donas mientras ella cocina",
+     "n": "Él hace las donas mientras ella cocina",
      "w": "el"
+    },
+    {
+     "s": "15:30",
+     "e": "16:00",
+     "t": "Prepara la sopita",
+     "c": "comida",
+     "n": "30 min",
+     "w": "dar"
     },
     {
      "s": "16:00",
      "e": "16:30",
-     "t": "Deja lista la sopa y la cena",
+     "t": "Prepara la cena",
      "c": "comida",
-     "n": "Pueden cambiar: Darlene con donas y Berny cocina",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
      "s": "16:30",
      "e": "17:00",
-     "t": "Trastes y luego empacar donas",
+     "t": "Glasear y empacar donas",
      "c": "donas",
      "n": "",
      "w": "dar"
@@ -1665,7 +1793,7 @@ export default {
     {
      "s": "20:00",
      "e": "20:20",
-     "t": "Cena (ya estaba lista)",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
@@ -1777,8 +1905,8 @@ export default {
     },
     {
      "s": "15:00",
-     "e": "16:00",
-     "t": "Donas",
+     "e": "15:30",
+     "t": "Empieza las donas con él",
      "c": "donas",
      "n": "",
      "w": "dar"
@@ -1788,21 +1916,29 @@ export default {
      "e": "17:00",
      "t": "Donas",
      "c": "donas",
-     "n": "Sigue con las donas mientras ella cocina",
+     "n": "Él hace las donas mientras ella cocina",
      "w": "el"
+    },
+    {
+     "s": "15:30",
+     "e": "16:00",
+     "t": "Prepara la sopita",
+     "c": "comida",
+     "n": "30 min",
+     "w": "dar"
     },
     {
      "s": "16:00",
      "e": "16:30",
-     "t": "Deja lista la sopa y la cena",
+     "t": "Prepara la cena",
      "c": "comida",
-     "n": "Pueden cambiar: Darlene con donas y Berny cocina",
+     "n": "30 min. En la noche solo se calienta",
      "w": "dar"
     },
     {
      "s": "16:30",
      "e": "17:00",
-     "t": "Trastes y luego empacar donas",
+     "t": "Glasear y empacar donas",
      "c": "donas",
      "n": "",
      "w": "dar"
@@ -1834,7 +1970,7 @@ export default {
     {
      "s": "20:00",
      "e": "20:20",
-     "t": "Cena (ya estaba lista)",
+     "t": "Cena (calentar y servir)",
      "c": "comida",
      "n": "",
      "w": "ambos"
@@ -1842,10 +1978,18 @@ export default {
     {
      "s": "20:20",
      "e": "20:45",
-     "t": "Planear la semana y loncheras del lunes",
+     "t": "Deja listos desayuno y colación del lunes",
+     "c": "comida",
+     "n": "Y arma las loncheras de la semana",
+     "w": "dar"
+    },
+    {
+     "s": "20:20",
+     "e": "20:45",
+     "t": "Planear la semana y mochilas al carro",
      "c": "casa",
      "n": "10 min: entregas de la escuela, guion de YouTube",
-     "w": "ambos"
+     "w": "el"
     },
     {
      "s": "20:45",

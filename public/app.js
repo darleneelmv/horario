@@ -72,7 +72,7 @@ function saveE(date, who, e) {
 function checkItems(date, who) {
   const seen = new Set();
   return personBlocks(day(dayIdx(date)), who)
-    .filter((b) => CHECK_CATS.includes(b.c) && !/^(Regreso|Camino|Margen)/.test(b.t))
+    .filter((b) => (CHECK_CATS.includes(b.c) || (b.c === "comida" && /^(Prepara|Deja list)/.test(b.t))) && !/^(Regreso|Camino|Margen)/.test(b.t))
     .map((b) => ({ ...b, id: b.s + "|" + b.t }))
     .filter((b) => (seen.has(b.id) ? false : seen.add(b.id)));
 }
@@ -490,7 +490,7 @@ function viewSemana() {
     ${hourTable()}</section>
   <section><div class="sec-head"><h2>Editar el horario</h2><div class="meta"><span>${horario.u ? "Editado " + new Date(horario.u).toLocaleDateString("es-MX", { day: "numeric", month: "short" }) : "Horario original"}</span></div></div>
     <p class="sub">Los cambios se guardan para los dos y se reflejan en el calendario del celular de cada uno.</p>
-    ${horario.u && (horario.version || 1) < window.HORARIO_BASE.version ? `<div class="card" style="border-color:var(--rose)"><h3>Hay un horario nuevo</h3><p class="msg">Clases separadas por hora y comidas a la misma hora para los dos. Si lo usan, se reemplazan los cambios que hicieron al horario (sus registros no se tocan).</p><div class="row2"><button class="btn primary" type="button" data-act="hresetok">Usar el horario nuevo</button></div></div>` : ""}
+    ${horario.u && (horario.version || 1) < window.HORARIO_BASE.version ? `<div class="card" style="border-color:var(--rose)"><h3>Hay un horario nuevo</h3><p class="msg">Clases por hora, comidas juntos, 30 min para cocinar antes de cada comida y desayuno y colación listos desde la noche. Si lo usan, se reemplazan los cambios que hicieron al horario (sus registros no se tocan).</p><div class="row2"><button class="btn primary" type="button" data-act="hresetok">Usar el horario nuevo</button></div></div>` : ""}
     <div class="tabs" role="tablist">${DAYS_SHORT.map((n, k) => `<button class="tab" type="button" data-act="semday" data-i="${k}" aria-selected="${k === i}">${n}</button>`).join("")}</div>
     <form class="card" data-form="wake"><h3>${d.name} <small>${hasVenta(d) ? "venta" : "día libre"}</small></h3>
       <div class="row2"><div class="field"><label for="dw">Despertar</label><input id="dw" type="time" name="wake" value="${d.wake}"></div>
