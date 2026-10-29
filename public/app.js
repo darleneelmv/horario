@@ -49,7 +49,8 @@ let entries = LS.get("ns.entries", {});
 let pending = LS.get("ns.pending", []);
 let horario = LS.get("ns.horario", null) || clone(window.HORARIO_BASE);
 let todoDone = LS.get("ns.todo", []);
-const ui = { pinMsg: null, who: settings.who, calMonth: today().slice(0, 7), moneyMonth: today().slice(0, 7), semDay: dayIdx(today()), edit: null, lastRoute: "" };
+let msgs = LS.get("ns.msgs", {}); // mensajes por destinatario: msgs.dar = lo que él le dejó a Darlene
+const ui = { pinMsg: null, loveFoto: null, loveMsg: "", tableWho: settings.who, who: settings.who, calMonth: today().slice(0, 7), moneyMonth: today().slice(0, 7), semDay: dayIdx(today()), edit: null, lastRoute: "" };
 
 const saveSettings = () => LS.set("ns.settings", settings);
 const day = (i) => horario.days[i];
@@ -129,7 +130,7 @@ async function flush() {
   try {
     while (pending.length) {
       const k = pending[0];
-      const value = k === "config/horario" ? horario : entries[k];
+      const value = k === "config/horario" ? horario : k.startsWith("msg/") ? msgs[k.slice(4)] : entries[k];
       if (value) await api("/api/data", { method: "PUT", body: JSON.stringify({ key: k, value }) });
       pending.shift();
       LS.set("ns.pending", pending);
@@ -158,6 +159,10 @@ async function pull() {
     const h = await api("/api/data?key=config/horario");
     if (h && h.value && Array.isArray(h.value.days) && !pending.includes("config/horario") && (h.value.u || 0) > (horario.u || 0)) {
       horario = h.value; LS.set("ns.horario", horario); changed = true;
+    }
+    for (const to of ["dar", "el"]) {
+      const r = await api("/api/data?key=msg/" + to);
+      if (r && r.value && !pending.includes("msg/" + to) && (r.value.u || 0) > ((msgs[to] && msgs[to].u) || 0)) { msgs[to] = r.value; LS.set("ns.msgs", msgs); changed = true; }
     }
     if (changed) { LS.set("ns.entries", entries); softRender(); }
     pulling = false;
@@ -221,10 +226,42 @@ function viewHoy() {
     <div class="hero-in"><span class="eyebrow">Darlene &amp; él · TecNM Puruándiro</span><h1>Nuestra semana</h1>
     <span class="eyebrow" style="color:var(--rose-2)">${esc(longDate(t))}</span></div>${LILY}</div>
   <div class="wrap">
+    ${loveSection()}
     <section><div class="sec-head"><h2>Ahora</h2><div class="meta">Hora <span id="clock">—</span></div></div>
       <div class="now" id="now"></div></section>
     ${dayPanel(t, true)}
   </div>`;
+}
+const ago = (u) => { const mn = Math.round((Date.now() - u) / 60000); if (mn < 1) return "hace un momento"; if (mn < 60) return `hace ${mn} min`; const h = Math.round(mn / 60); if (h < 24) return `hace ${h} h`; return new Date(u).toLocaleDateString("es-MX", { day: "numeric", month: "short" }); };
+function loveSection() {
+  const me = settings.who, other = me === "dar" ? "el" : "dar";
+  const inbox = msgs[me], sent = msgs[other];
+  return `<section class="love"><div class="sec-head"><h2>Para ti</h2><div class="meta">${WHO[me]} <span>${me === "dar" ? "de él" : "de Darlene"}</span></div></div>
+    <div class="two">
+      <div class="lovecard">${inbox
+        ? `${inbox.foto ? `<img src="${inbox.foto}" alt="Foto que te dejó ${WHO[other]}">` : ""}${inbox.texto ? `<p class="lovetxt">${esc(inbox.texto)}</p>` : ""}<span class="sub">De ${WHO[other]} · ${ago(inbox.u)}</span>`
+        : `<p class="lovetxt" style="font-size:30px">Aquí aparece lo que te deje ${me === "dar" ? "él" : "Darlene"}</p><span class="sub">Una nota linda o una foto. ¿Este celular no es de ${WHO[me]}? Cámbialo en Ajustes.</span>`}</div>
+      <form class="card" data-form="love"><h3>Déjale algo a ${WHO[other] === "Él" ? "él" : "Darlene"}</h3>
+        <textarea name="texto" maxlength="500" placeholder="Escríbele algo bonito…" aria-label="Nota para ${WHO[other]}" style="min-height:90px">${esc(ui.loveDraft || "")}</textarea>
+        ${ui.loveFoto ? `<img class="lovepre" src="${ui.loveFoto}" alt="Foto lista para enviar">` : ""}
+        <div class="row2"><label class="btn" for="lovefoto">${ui.loveFoto ? "Cambiar foto" : "Agregar foto"}</label><input id="lovefoto" type="file" accept="image/*" data-act="lovefoto" hidden>
+          ${ui.loveFoto ? '<button class="btn ghost" type="button" data-act="lovenofoto">Quitar foto</button>' : ""}<button class="btn primary" type="submit">Enviar</button></div>
+        <span class="msg ${ui.loveMsg ? "ok" : ""}">${esc(ui.loveMsg || "")}</span>
+        ${sent ? `<span class="sub">Lo último que le dejaste (${ago(sent.u)}): ${sent.foto ? "una foto" : ""}${sent.foto && sent.texto ? " y " : ""}${sent.texto ? "“" + esc(sent.texto.slice(0, 60)) + (sent.texto.length > 60 ? "…" : "") + "”" : ""}</span>` : ""}
+      </form>
+    </div></section>`;
+}
+async function compressPhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    await new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error("No se pudo abrir la foto.")); img.src = url; });
+    const max = 1080, sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * sc); c.height = Math.round(img.naturalHeight * sc);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL("image/jpeg", 0.78);
+  } finally { URL.revokeObjectURL(url); }
 }
 function statusOf(who, i, m) {
   const d = day(i), bl = personBlocks(d, who);
@@ -233,8 +270,12 @@ function statusOf(who, i, m) {
     const n = day((i + 1) % 7), nb = personBlocks(n, who)[0];
     return { cur: { t: "Dormir", c: "sueno", e: n.wake }, next: nb && { ...nb, tomorrow: true }, rem: 24 * 60 - m + toMin(n.wake), pct: null };
   }
-  const k = bl.findIndex((b) => m >= toMin(b.s) && m < toMin(b.e));
-  if (k >= 0) { const b = bl[k]; return { cur: b, next: bl[k + 1] || { t: "Dormir", s: d.sleep }, rem: toMin(b.e) - m, pct: (m - toMin(b.s)) / (toMin(b.e) - toMin(b.s)) }; }
+  const inside = bl.filter((b) => m >= toMin(b.s) && m < toMin(b.e));
+  if (inside.length) {
+    const b = inside[inside.length - 1];
+    const nx = bl.find((x) => toMin(x.s) > m) || { t: "Dormir", s: d.sleep };
+    return { cur: b, next: nx, rem: toMin(b.e) - m, pct: (m - toMin(b.s)) / (toMin(b.e) - toMin(b.s)) };
+  }
   const nx = bl.find((b) => toMin(b.s) > m) || { t: "Dormir", s: d.sleep };
   return { cur: { t: "Entre bloques", c: "colchon" }, next: nx, rem: toMin(nx.s) - m, pct: null };
 }
@@ -380,6 +421,41 @@ function tickGrid() {
   if (top >= 0 && top <= H) { const l = document.createElement("div"); l.className = "nowline"; l.style.top = top + "px"; col.appendChild(l); }
   col.querySelectorAll(".g").forEach((g) => { if (m >= +g.dataset.s && m < +g.dataset.e && !g.classList.contains("sueno")) g.classList.add("cur"); });
 }
+function hourTable() {
+  const who = ui.tableWho, ti = dayIdx(today()), nm = nowMin();
+  const fmtS = (t) => fmt(t).replace(" am", "").replace(" pm", "");
+  const vis = (b) => who === "ambos" || b.w === "ambos" || b.w === who;
+  let first = 24, last = 0;
+  horario.days.forEach((d) => { first = Math.min(first, Math.floor(toMin(d.wake) / 60)); last = Math.max(last, Math.ceil(toMin(d.sleep) / 60)); });
+  let rows = "";
+  for (let h = first; h < last; h++) {
+    const hs = h * 60, he = hs + 60;
+    const cells = horario.days.map((d, i) => {
+      const bl = d.blocks.filter((b) => vis(b) && toMin(b.s) < he && toMin(b.e) > hs).sort((a, b) => toMin(a.s) - toMin(b.s));
+      const sleepStart = toMin(d.sleep), wake = toMin(d.wake);
+      const lines = [];
+      if (wake > hs && wake >= he) lines.push({ t: "Dormir", c: "sueno", s: null });
+      bl.forEach((b) => lines.push(b));
+      if (sleepStart >= hs && sleepStart < he) lines.push({ t: "Dormir", c: "sueno", s: d.sleep });
+      else if (hs >= sleepStart) lines.push({ t: "Dormir", c: "sueno", s: null });
+      const score = {};
+      bl.forEach((b) => { if (["colchon", "personal"].includes(b.c)) return; const ov = Math.min(he, toMin(b.e)) - Math.max(hs, toMin(b.s)); score[b.c] = (score[b.c] || 0) + ov; });
+      let dom = Object.entries(score).sort((a, b) => b[1] - a[1])[0];
+      dom = dom ? dom[0] : lines.length && lines.every((l) => l.c === "sueno") ? "sueno" : "personal";
+      const isNow = i === ti && nm >= hs && nm < he;
+      const html = lines.map((b) => {
+        const starts = b.s && toMin(b.s) >= hs;
+        const chip = who === "ambos" && b.w && b.w !== "ambos" ? `<em class="wc">${b.w === "dar" ? "D" : "É"}</em>` : "";
+        const sub = b.c === "escuela" && b.n && starts ? `<small>${esc(b.n)}</small>` : "";
+        return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"}" style="${vars(b.c)}"><i></i><span class="hm">${starts ? fmtS(b.s) : b.c === "sueno" ? "" : "sigue"}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div>`;
+      }).join("");
+      return `<td class="hc ${i === ti ? "today" : ""} ${isNow ? "now" : ""}" style="${vars(dom)}">${html}</td>`;
+    }).join("");
+    rows += `<tr><th scope="row" class="hh">${h % 12 || 12}:00<span>${h >= 12 ? "pm" : "am"}</span></th>${cells}</tr>`;
+  }
+  return `<div class="htwrap"><table class="ht ${who === "ambos" ? "both" : ""}"><thead><tr><th class="hh">Hora</th>${horario.days.map((d, i) => `<th class="${i === ti ? "today" : ""}"><span class="pillhead">${d.name}</span><small>${hasVenta(d) ? "venta" : "día libre"}</small></th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="legend">${Object.entries(CATS).filter(([k]) => k !== "colchon").map(([k, v]) => `<span style="${vars(k)}"><i></i>${v}</span>`).join("")}</div>`;
+}
 function blockForm(b, idx) {
   return `<form class="card" data-form="block" data-i="${idx}" style="border-color:var(--rose)">
     <h3>${idx === "new" ? "Nuevo bloque" : "Editar bloque"}</h3>
@@ -408,10 +484,12 @@ function viewSemana() {
   const adding = ui.edit && ui.edit.day === i && ui.edit.i === "new";
   return `<div class="wrap">
   <section><div class="sec-head"><h2>Plan semanal</h2><div class="meta"><a class="btn sm" href="#ajustes" data-act="gocal">Agregar a mi calendario</a></div></div>
-    <p class="sub">D = Darlene · É = Él. La línea rosa marca la hora actual. En el celular, desliza para ver todos los días.</p>
-    ${weekGrid()}</section>
+    <p class="sub">Hora por hora, como el horario de la escuela. La columna de hoy y la hora actual van marcadas en rosa. En el celular, desliza para ver todos los días.</p>
+    <div class="row2"><div class="seg" role="group" aria-label="Ver horario de">${[["dar", "Darlene"], ["el", "Él"], ["ambos", "Los dos"]].map(([k, l]) => `<button type="button" data-act="tablewho" data-w="${k}" aria-pressed="${ui.tableWho === k}">${l}</button>`).join("")}</div></div>
+    ${hourTable()}</section>
   <section><div class="sec-head"><h2>Editar el horario</h2><div class="meta"><span>${horario.u ? "Editado " + new Date(horario.u).toLocaleDateString("es-MX", { day: "numeric", month: "short" }) : "Horario original"}</span></div></div>
     <p class="sub">Los cambios se guardan para los dos y se reflejan en el calendario del celular de cada uno.</p>
+    ${horario.u && (horario.version || 1) < window.HORARIO_BASE.version ? `<div class="card" style="border-color:var(--rose)"><h3>Hay un horario nuevo</h3><p class="msg">Clases separadas por hora y comidas a la misma hora para los dos. Si lo usan, se reemplazan los cambios que hicieron al horario (sus registros no se tocan).</p><div class="row2"><button class="btn primary" type="button" data-act="hresetok">Usar el horario nuevo</button></div></div>` : ""}
     <div class="tabs" role="tablist">${DAYS_SHORT.map((n, k) => `<button class="tab" type="button" data-act="semday" data-i="${k}" aria-selected="${k === i}">${n}</button>`).join("")}</div>
     <form class="card" data-form="wake"><h3>${d.name} <small>${hasVenta(d) ? "venta" : "día libre"}</small></h3>
       <div class="row2"><div class="field"><label for="dw">Despertar</label><input id="dw" type="time" name="wake" value="${d.wake}"></div>
@@ -428,6 +506,7 @@ function viewSemana() {
 function saveHorario() {
   horario.days.forEach((d) => d.blocks.sort((a, b) => toMin(a.s) - toMin(b.s)));
   horario.u = Date.now();
+  if (!horario.version) horario.version = window.HORARIO_BASE.version;
   LS.set("ns.horario", horario);
   queue("config/horario");
 }
@@ -588,6 +667,8 @@ document.addEventListener("click", async (ev) => {
   if (act === "who") { ui.who = who; return render(true); }
   if (act === "cal") { ui.calMonth = +t.dataset.n === 0 ? today().slice(0, 7) : shiftMonth(ui.calMonth, +t.dataset.n); render(true); return pull(); }
   if (act === "mon") { ui.moneyMonth = shiftMonth(ui.moneyMonth, +t.dataset.n); render(true); return pull(); }
+  if (act === "tablewho") { ui.tableWho = t.dataset.w; return render(true); }
+  if (act === "lovenofoto") { ui.loveFoto = null; return render(true); }
   if (act === "semday") { ui.semDay = +t.dataset.i; ui.edit = null; return render(true); }
   if (act === "bedit") { ui.edit = { day: ui.semDay, i: +t.dataset.i }; return render(true); }
   if (act === "badd") { ui.edit = { day: ui.semDay, i: "new" }; return render(true); }
@@ -597,12 +678,12 @@ document.addEventListener("click", async (ev) => {
   if (act === "hresetok") { horario = clone(window.HORARIO_BASE); saveHorario(); ui.edit = null; return render(true); }
   if (act === "calwho") { settings.calWho = who; saveSettings(); return render(true); }
   if (act === "calmodo") { settings.calModo = t.dataset.m; saveSettings(); return render(true); }
-  if (act === "me") { settings.who = who; ui.who = who; settings.calWho = who; saveSettings(); return render(true); }
+  if (act === "me") { settings.who = who; ui.who = who; ui.tableWho = who; settings.calWho = who; saveSettings(); return render(true); }
   if (act === "copycal") { try { await navigator.clipboard.writeText(t.dataset.url); $("#calmsg").textContent = "Enlace copiado."; } catch (e) { $("#calmsg").textContent = t.dataset.url; } return; }
   if (act === "dlics") { const w = settings.calWho || settings.who; download(`nuestra-semana-${w}.ics`, buildICS(horario, w, settings.calModo, WHO[w]), "text/calendar"); $("#calmsg").textContent = "Abre el archivo descargado para agregar los eventos."; return; }
-  if (act === "backup") { download(`nuestra-semana-respaldo-${today()}.json`, JSON.stringify({ app: "nuestra-semana", v: 1, entries, horario, todoDone }, null, 1), "application/json"); $("#bkmsg").textContent = "Respaldo descargado."; return; }
+  if (act === "backup") { download(`nuestra-semana-respaldo-${today()}.json`, JSON.stringify({ app: "nuestra-semana", v: 1, entries, horario, todoDone, msgs }, null, 1), "application/json"); $("#bkmsg").textContent = "Respaldo descargado."; return; }
   if (act === "wipe") { $("#wconfirm").classList.add("on"); return; }
-  if (act === "wipeok") { entries = {}; pending = []; horario = clone(window.HORARIO_BASE); todoDone = []; ["ns.entries", "ns.pending", "ns.horario", "ns.todo"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); render(true); return pull(); }
+  if (act === "wipeok") { entries = {}; pending = []; horario = clone(window.HORARIO_BASE); todoDone = []; msgs = {}; ["ns.entries", "ns.pending", "ns.horario", "ns.todo", "ns.msgs"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); render(true); return pull(); }
   if (act === "copysum") {
     const ym = ui.moneyMonth, mo = moneyOf(monthDates(ym));
     const txt = `Nuestra semana · ${monthName(ym)}\nIngresos: ${money(mo.ing)}\nEgresos: ${money(mo.egr)}\nNeto: ${money(mo.net)}`;
@@ -617,6 +698,12 @@ document.addEventListener("change", (ev) => {
   if (act === "check") { const e = getE(date, who); e.checks[t.dataset.id] = t.checked; if (!t.checked) delete e.checks[t.dataset.id]; saveE(date, who, e); return render(true); }
   if (act === "habit") { const e = getE(date, who); e.habits[t.dataset.k] = t.checked; saveE(date, who, e); return render(true); }
   if (act === "ctoggle") { const e = getE(date, who); const c = e.custom.find((x) => x.id === t.dataset.id); if (c) c.done = t.checked; saveE(date, who, e); return render(true); }
+  if (act === "lovefoto") {
+    const f = t.files && t.files[0]; if (!f) return;
+    const ta = document.querySelector('[data-form="love"] textarea'); if (ta) ui.loveDraft = ta.value;
+    compressPhoto(f).then((d) => { ui.loveFoto = d; ui.loveMsg = ""; render(true); }).catch((e) => { ui.loveMsg = e.message; render(true); });
+    return;
+  }
   if (act === "todo") { todoDone[+t.dataset.i] = t.checked; LS.set("ns.todo", todoDone); return render(true); }
   if (act === "restore") {
     const f = t.files && t.files[0]; if (!f) return;
@@ -626,6 +713,7 @@ document.addEventListener("change", (ev) => {
       Object.entries(d.entries || {}).forEach(([k, v]) => { if (!entries[k] || (v.u || 0) > (entries[k].u || 0)) { entries[k] = v; queue(k); } });
       if (d.horario && Array.isArray(d.horario.days) && (d.horario.u || 0) > (horario.u || 0)) { horario = d.horario; LS.set("ns.horario", horario); queue("config/horario"); }
       if (Array.isArray(d.todoDone)) { todoDone = d.todoDone; LS.set("ns.todo", todoDone); }
+      if (d.msgs && typeof d.msgs === "object") { msgs = Object.assign({}, msgs, d.msgs); LS.set("ns.msgs", msgs); }
       LS.set("ns.entries", entries); render(true); $("#bkmsg").textContent = "Respaldo restaurado.";
     }).catch((e) => { $("#bkmsg").textContent = e.message || "No se pudo leer el archivo."; });
   }
@@ -644,6 +732,15 @@ document.addEventListener("submit", async (ev) => {
   if (!f) return;
   ev.preventDefault();
   const fd = new FormData(f), who = f.dataset.who, date = peopleDate(f);
+  if (f.dataset.form === "love") {
+    const texto = String(fd.get("texto") || "").trim();
+    if (!texto && !ui.loveFoto) { ui.loveMsg = ""; return; }
+    const to = settings.who === "dar" ? "el" : "dar";
+    msgs[to] = { de: settings.who, texto, foto: ui.loveFoto || null, u: Date.now() };
+    LS.set("ns.msgs", msgs); queue("msg/" + to);
+    ui.loveFoto = null; ui.loveDraft = ""; ui.loveMsg = `Listo, ${to === "el" ? "él" : "Darlene"} lo verá al abrir la app.`;
+    return render(true);
+  }
   if (f.dataset.form === "task") {
     const tx = String(fd.get("t") || "").trim(); if (!tx) return;
     const e = getE(date, who); e.custom.push({ id: uid(), t: tx, done: false }); saveE(date, who, e); render(true);
@@ -734,7 +831,8 @@ window.addEventListener("hashchange", () => { ui.edit = null; render(); pull(); 
 let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(leopard, 150); });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") { pull(); render(true); } });
 window.addEventListener("online", pull);
-setInterval(() => { tickNow(); tickGrid(); }, 30000);
+setInterval(() => { tickNow(); if (currentRoute() === "semana" && !ui.edit) softRender(); }, 60000);
+setInterval(tickNow, 30000);
 setInterval(pull, 60000);
 render();
 setSync(settings.pin ? "busy" : "local");

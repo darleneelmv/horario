@@ -1,6 +1,6 @@
 /* Horario base de Darlene y él. Los cambios hechos en la página se guardan aparte y tienen prioridad. */
 window.HORARIO_BASE={
- "version": 2,
+ "version": 3,
  "days": [
   {
    "k": "lun",
@@ -19,19 +19,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "04:40",
-     "e": "05:20",
-     "t": "Se arregla para el día",
-     "c": "personal",
-     "n": "35–40 min",
-     "w": "dar"
-    },
-    {
-     "s": "04:40",
      "e": "05:05",
      "t": "Pasea a la perrita",
      "c": "perrita",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "04:40",
+     "e": "05:20",
+     "t": "Se arregla para el día",
+     "c": "personal",
+     "n": "35–40 min",
+     "w": "dar"
     },
     {
      "s": "05:05",
@@ -76,7 +76,7 @@ window.HORARIO_BASE={
     {
      "s": "07:40",
      "e": "07:55",
-     "t": "Directo a la escuela, licuado en el camino",
+     "t": "Camino a la escuela con licuado",
      "c": "comida",
      "n": "",
      "w": "el"
@@ -84,72 +84,88 @@ window.HORARIO_BASE={
     {
      "s": "07:55",
      "e": "08:30",
-     "t": "Desayuno en casa con calma",
-     "c": "comida",
+     "t": "Recoger la casa y preparar su espacio",
+     "c": "casa",
      "n": "",
      "w": "dar"
     },
     {
      "s": "08:00",
-     "e": "11:00",
-     "t": "Estática · Electromagnetismo",
+     "e": "10:00",
+     "t": "Estática",
      "c": "escuela",
-     "n": "Desayuno en el cambio de clase",
+     "n": "Salón B4",
      "w": "el"
     },
     {
      "s": "08:30",
-     "e": "11:30",
-     "t": "Empresa o proyectos personales",
+     "e": "09:45",
+     "t": "Empresa o proyectos (1 de 2)",
      "c": "proyecto",
-     "n": "3 h de trabajo enfocado. Colación a las 11:30",
+     "n": "Sin celular",
+     "w": "dar"
+    },
+    {
+     "s": "09:45",
+     "e": "10:10",
+     "t": "Desayuno",
+     "c": "comida",
+     "n": "A la misma hora los dos: huevo de la lonchera",
+     "w": "ambos"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Electromagnetismo",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "10:10",
+     "e": "11:55",
+     "t": "Empresa o proyectos (2 de 2)",
+     "c": "proyecto",
+     "n": "Completa sus 3 h",
      "w": "dar"
     },
     {
      "s": "11:00",
-     "e": "12:30",
+     "e": "12:00",
      "t": "Hueco: tareas",
      "c": "tareas",
-     "n": "Biblioteca. Colación 11:30",
+     "n": "Biblioteca",
      "w": "el"
     },
     {
-     "s": "11:30",
-     "e": "11:45",
+     "s": "12:00",
+     "e": "12:15",
+     "t": "Colación",
+     "c": "comida",
+     "n": "Yogur con fruta y granola",
+     "w": "ambos"
+    },
+    {
+     "s": "12:15",
+     "e": "12:30",
      "t": "Poner la lavadora",
      "c": "casa",
-     "n": "La lavada de entre semana pasa al lunes para liberar el miércoles",
+     "n": "",
      "w": "dar"
     },
     {
-     "s": "11:45",
-     "e": "12:45",
-     "t": "YouTube: guion y edición",
-     "c": "youtube",
+     "s": "12:15",
+     "e": "13:00",
+     "t": "Hueco: tareas",
+     "c": "tareas",
      "n": "",
-     "w": "dar"
+     "w": "el"
     },
     {
      "s": "12:30",
-     "e": "13:00",
-     "t": "Comida fuerte de la lonchera",
-     "c": "comida",
-     "n": "",
-     "w": "el"
-    },
-    {
-     "s": "12:45",
-     "e": "13:00",
-     "t": "Tender la ropa",
-     "c": "casa",
-     "n": "",
-     "w": "dar"
-    },
-    {
-     "s": "13:00",
      "e": "13:30",
-     "t": "Comida fuerte",
-     "c": "comida",
+     "t": "YouTube: guion y edición",
+     "c": "youtube",
      "n": "",
      "w": "dar"
     },
@@ -163,7 +179,15 @@ window.HORARIO_BASE={
     },
     {
      "s": "13:30",
-     "e": "14:45",
+     "e": "13:45",
+     "t": "Tender la ropa",
+     "c": "casa",
+     "n": "",
+     "w": "dar"
+    },
+    {
+     "s": "13:45",
+     "e": "15:00",
      "t": "Tareas",
      "c": "tareas",
      "n": "",
@@ -171,19 +195,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "14:00",
-     "e": "16:00",
-     "t": "Taller de Ética · Calidad",
+     "e": "15:00",
+     "t": "Taller de Ética",
      "c": "escuela",
-     "n": "",
+     "n": "Salón A5",
      "w": "el"
     },
     {
-     "s": "14:45",
-     "e": "15:00",
-     "t": "Margen",
-     "c": "colchon",
-     "n": "",
-     "w": "dar"
+     "s": "15:00",
+     "e": "16:00",
+     "t": "Calidad",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
     },
     {
      "s": "15:00",
@@ -204,41 +228,57 @@ window.HORARIO_BASE={
     {
      "s": "16:15",
      "e": "16:45",
-     "t": "Sopa y cena listas, trastes",
+     "t": "Comida fuerte juntos",
      "c": "comida",
-     "n": "Él ya sigue con las donas",
+     "n": "",
+     "w": "ambos"
+    },
+    {
+     "s": "16:45",
+     "e": "17:15",
+     "t": "Sopa al termo y cena lista, trastes",
+     "c": "comida",
+     "n": "",
      "w": "dar"
     },
     {
-     "s": "16:15",
-     "e": "17:15",
+     "s": "16:45",
+     "e": "17:35",
      "t": "Sigue con las donas",
      "c": "donas",
      "n": "",
      "w": "el"
     },
     {
-     "s": "16:45",
-     "e": "17:15",
+     "s": "17:15",
+     "e": "17:35",
      "t": "Donas: glasear y empacar",
      "c": "donas",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "17:15",
-     "e": "17:25",
-     "t": "Sopita",
-     "c": "comida",
+     "s": "17:35",
+     "e": "17:45",
+     "t": "Salir a vender",
+     "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "17:25",
+     "s": "17:45",
      "e": "19:45",
      "t": "Venta de donas",
      "c": "donas",
      "n": "",
+     "w": "ambos"
+    },
+    {
+     "s": "18:30",
+     "e": "18:45",
+     "t": "Sopita en termo",
+     "c": "comida",
+     "n": "Durante la venta",
      "w": "ambos"
     },
     {
@@ -259,14 +299,14 @@ window.HORARIO_BASE={
     },
     {
      "s": "20:20",
-     "e": "20:35",
+     "e": "20:40",
      "t": "Trastes y loncheras de mañana",
      "c": "casa",
      "n": "Pasen al refri lo de mañana",
      "w": "ambos"
     },
     {
-     "s": "20:35",
+     "s": "20:40",
      "e": "21:15",
      "t": "Tareas",
      "c": "tareas",
@@ -300,19 +340,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "04:40",
-     "e": "05:20",
-     "t": "Se arregla para el día",
-     "c": "personal",
-     "n": "35–40 min",
-     "w": "dar"
-    },
-    {
-     "s": "04:40",
      "e": "05:05",
      "t": "Pasea a la perrita",
      "c": "perrita",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "04:40",
+     "e": "05:20",
+     "t": "Se arregla para el día",
+     "c": "personal",
+     "n": "35–40 min",
+     "w": "dar"
     },
     {
      "s": "05:05",
@@ -349,38 +389,94 @@ window.HORARIO_BASE={
     {
      "s": "07:40",
      "e": "07:55",
-     "t": "Directo a la escuela, licuado en el camino",
+     "t": "Camino a la escuela con licuado",
      "c": "comida",
-     "n": "Licuado post-entreno del termo",
+     "n": "",
      "w": "ambos"
     },
     {
      "s": "08:00",
-     "e": "14:00",
-     "t": "Cloud · Integración de TI · BI · Tutorías · IoT",
+     "e": "09:00",
+     "t": "Cloud Computing",
      "c": "escuela",
-     "n": "Desayuno ~9:50, colación ~12:00",
+     "n": "Lab. Electrónica 1 · Andrés Ramírez Quezada",
      "w": "dar"
     },
     {
      "s": "08:00",
-     "e": "13:00",
-     "t": "Fund. de Investigación · Electromagnetismo · Francés 1",
+     "e": "10:00",
+     "t": "Fundamentos de Investigación",
      "c": "escuela",
-     "n": "",
+     "n": "Salón A5",
      "w": "el"
+    },
+    {
+     "s": "09:00",
+     "e": "10:00",
+     "t": "Integración de Proyectos de TI",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Emmanuel Trujillo Cevallos",
+     "w": "dar"
+    },
+    {
+     "s": "09:45",
+     "e": "10:10",
+     "t": "Desayuno",
+     "c": "comida",
+     "n": "A la misma hora los dos: huevo de la lonchera",
+     "w": "ambos"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Business Intelligence",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Alejandro Medina Tovar",
+     "w": "dar"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Electromagnetismo",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "11:00",
+     "e": "12:00",
+     "t": "Tutorías",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1",
+     "w": "dar"
+    },
+    {
+     "s": "11:00",
+     "e": "13:00",
+     "t": "Francés 1",
+     "c": "escuela",
+     "n": "Salón A5",
+     "w": "el"
+    },
+    {
+     "s": "12:00",
+     "e": "12:15",
+     "t": "Colación",
+     "c": "comida",
+     "n": "Yogur con fruta y granola",
+     "w": "ambos"
+    },
+    {
+     "s": "12:00",
+     "e": "14:00",
+     "t": "Internet de las Cosas",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Héctor Alejandro Sosa Gómez",
+     "w": "dar"
     },
     {
      "s": "13:00",
-     "e": "13:30",
-     "t": "Comida fuerte de la lonchera",
-     "c": "comida",
-     "n": "",
-     "w": "el"
-    },
-    {
-     "s": "13:30",
-     "e": "15:00",
+     "e": "14:00",
      "t": "Hueco: tareas",
      "c": "tareas",
      "n": "",
@@ -389,17 +485,25 @@ window.HORARIO_BASE={
     {
      "s": "14:00",
      "e": "14:30",
-     "t": "Comida fuerte de la lonchera",
+     "t": "Comida fuerte juntos en la escuela",
      "c": "comida",
+     "n": "De la lonchera",
+     "w": "ambos"
+    },
+    {
+     "s": "14:30",
+     "e": "15:00",
+     "t": "Hueco: tareas",
+     "c": "tareas",
      "n": "",
-     "w": "dar"
+     "w": "el"
     },
     {
      "s": "14:30",
      "e": "16:00",
      "t": "Tareas o proyectos mientras lo espera",
      "c": "tareas",
-     "n": "En la biblioteca. Salen juntos a las 4:00 para ahorrar gasolina",
+     "n": "Biblioteca. Salen juntos a las 4:00 para ahorrar gasolina",
      "w": "dar"
     },
     {
@@ -407,7 +511,7 @@ window.HORARIO_BASE={
      "e": "16:00",
      "t": "Contabilidad y Costos",
      "c": "escuela",
-     "n": "",
+     "n": "Salón B4",
      "w": "el"
     },
     {
@@ -423,7 +527,7 @@ window.HORARIO_BASE={
      "e": "17:00",
      "t": "Donas",
      "c": "donas",
-     "n": "Con el kit ya pesado desde el domingo",
+     "n": "",
      "w": "dar"
     },
     {
@@ -455,7 +559,7 @@ window.HORARIO_BASE={
      "e": "18:00",
      "t": "Sopita",
      "c": "comida",
-     "n": "Crema de calabacita",
+     "n": "",
      "w": "ambos"
     },
     {
@@ -463,7 +567,7 @@ window.HORARIO_BASE={
      "e": "20:00",
      "t": "Venta de donas",
      "c": "donas",
-     "n": "Hoy empieza a las 6:00 porque llegan juntos a las 4:15",
+     "n": "",
      "w": "ambos"
     },
     {
@@ -487,7 +591,7 @@ window.HORARIO_BASE={
      "e": "20:50",
      "t": "Trastes y loncheras de mañana",
      "c": "casa",
-     "n": "Pasen al refri lo de mañana",
+     "n": "",
      "w": "ambos"
     },
     {
@@ -525,19 +629,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "04:40",
-     "e": "05:20",
-     "t": "Se arregla para el día",
-     "c": "personal",
-     "n": "35–40 min",
-     "w": "dar"
-    },
-    {
-     "s": "04:40",
      "e": "05:05",
      "t": "Saca la basura y recoge",
      "c": "casa",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "04:40",
+     "e": "05:20",
+     "t": "Se arregla para el día",
+     "c": "personal",
+     "n": "35–40 min",
+     "w": "dar"
     },
     {
      "s": "05:05",
@@ -574,37 +678,85 @@ window.HORARIO_BASE={
     {
      "s": "07:40",
      "e": "07:55",
-     "t": "Directo a la escuela, licuado en el camino",
+     "t": "Camino a la escuela con licuado",
      "c": "comida",
-     "n": "Licuado post-entreno del termo",
+     "n": "",
      "w": "ambos"
     },
     {
      "s": "08:00",
-     "e": "15:00",
-     "t": "Ciencia de Datos · BI · Cloud · IoT · Integración de TI",
+     "e": "10:00",
+     "t": "Ciencia de Datos",
      "c": "escuela",
-     "n": "",
+     "n": "Lab. Electrónica 1 · Salvador Duarte Rodríguez",
      "w": "dar"
     },
     {
      "s": "08:00",
-     "e": "13:00",
-     "t": "Estática · Electromagnetismo · Francés 3",
+     "e": "10:00",
+     "t": "Estática",
      "c": "escuela",
-     "n": "",
+     "n": "Salón B4",
      "w": "el"
+    },
+    {
+     "s": "09:45",
+     "e": "10:10",
+     "t": "Desayuno",
+     "c": "comida",
+     "n": "A la misma hora los dos: huevo de la lonchera",
+     "w": "ambos"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Business Intelligence",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Alejandro Medina Tovar",
+     "w": "dar"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Electromagnetismo",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "11:00",
+     "e": "12:00",
+     "t": "Cloud Computing",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Andrés Ramírez Quezada",
+     "w": "dar"
+    },
+    {
+     "s": "11:00",
+     "e": "13:00",
+     "t": "Francés 3",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "12:00",
+     "e": "12:15",
+     "t": "Colación",
+     "c": "comida",
+     "n": "Yogur con fruta y granola",
+     "w": "ambos"
+    },
+    {
+     "s": "12:00",
+     "e": "14:00",
+     "t": "Internet de las Cosas",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Héctor Alejandro Sosa Gómez",
+     "w": "dar"
     },
     {
      "s": "13:00",
-     "e": "13:30",
-     "t": "Comida fuerte de la lonchera",
-     "c": "comida",
-     "n": "",
-     "w": "el"
-    },
-    {
-     "s": "13:30",
      "e": "14:00",
      "t": "Hueco: tareas",
      "c": "tareas",
@@ -613,27 +765,35 @@ window.HORARIO_BASE={
     },
     {
      "s": "14:00",
-     "e": "16:00",
-     "t": "Taller de Ética · Tutorías con Silvia",
+     "e": "15:00",
+     "t": "Integración de Proyectos de TI",
      "c": "escuela",
-     "n": "",
+     "n": "Lab. Electrónica 1 · Emmanuel Trujillo Cevallos",
+     "w": "dar"
+    },
+    {
+     "s": "14:00",
+     "e": "15:00",
+     "t": "Taller de Ética",
+     "c": "escuela",
+     "n": "Salón A5",
      "w": "el"
     },
     {
      "s": "15:00",
-     "e": "15:20",
-     "t": "Comida fuerte de la lonchera",
-     "c": "comida",
-     "n": "",
-     "w": "dar"
-    },
-    {
-     "s": "15:20",
      "e": "16:00",
      "t": "Tareas o proyectos mientras lo espera",
      "c": "tareas",
      "n": "Salen juntos a las 4:00 para ahorrar gasolina",
      "w": "dar"
+    },
+    {
+     "s": "15:00",
+     "e": "16:00",
+     "t": "Tutorías con Silvia",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
     },
     {
      "s": "16:00",
@@ -645,26 +805,34 @@ window.HORARIO_BASE={
     },
     {
      "s": "16:15",
-     "e": "17:15",
-     "t": "Limpiar desechos de las mascotas",
-     "c": "casa",
-     "n": "Los dos, 1 h. Se queda aquí para que haya 3–4 días entre limpiezas",
-     "w": "ambos"
-    },
-    {
-     "s": "17:15",
-     "e": "17:30",
-     "t": "Sopita",
+     "e": "16:45",
+     "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "17:30",
+     "s": "16:45",
+     "e": "17:45",
+     "t": "Limpiar desechos de las mascotas",
+     "c": "casa",
+     "n": "Los dos, 1 h",
+     "w": "ambos"
+    },
+    {
+     "s": "17:45",
      "e": "20:00",
      "t": "Día libre: YouTube y proyectos",
      "c": "youtube",
-     "n": "2:30 h juntos: grabar, editar, ideas de contenido, redes, lo de la empresa o cualquier pendiente colateral",
+     "n": "Grabar, editar, ideas de contenido, redes, la empresa o cualquier pendiente",
+     "w": "ambos"
+    },
+    {
+     "s": "18:30",
+     "e": "18:45",
+     "t": "Sopita",
+     "c": "comida",
+     "n": "Pausa en el día libre",
      "w": "ambos"
     },
     {
@@ -726,19 +894,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "04:40",
-     "e": "05:20",
-     "t": "Se arregla para el día",
-     "c": "personal",
-     "n": "35–40 min",
-     "w": "dar"
-    },
-    {
-     "s": "04:40",
      "e": "05:05",
      "t": "Pasea a la perrita",
      "c": "perrita",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "04:40",
+     "e": "05:20",
+     "t": "Se arregla para el día",
+     "c": "personal",
+     "n": "35–40 min",
+     "w": "dar"
     },
     {
      "s": "05:05",
@@ -775,49 +943,113 @@ window.HORARIO_BASE={
     {
      "s": "07:40",
      "e": "07:55",
-     "t": "Directo a la escuela, licuado en el camino",
+     "t": "Regreso a casa con licuado",
      "c": "comida",
-     "n": "Licuado post-entreno del termo",
-     "w": "ambos"
-    },
-    {
-     "s": "07:55",
-     "e": "09:00",
-     "t": "Desayuno y tareas en la escuela",
-     "c": "tareas",
-     "n": "Hoy entra a las 9:00",
+     "n": "Hoy se va aparte a la escuela",
      "w": "dar"
     },
     {
-     "s": "08:00",
-     "e": "11:00",
-     "t": "Fund. de Investigación · Electromagnetismo",
-     "c": "escuela",
+     "s": "07:40",
+     "e": "07:55",
+     "t": "Camino a la escuela con licuado",
+     "c": "comida",
      "n": "",
      "w": "el"
     },
     {
-     "s": "09:00",
-     "e": "13:00",
-     "t": "Integración de TI · BI · Ciencia de Datos · Cloud",
-     "c": "escuela",
+     "s": "07:55",
+     "e": "08:40",
+     "t": "Tareas en casa",
+     "c": "tareas",
      "n": "",
+     "w": "dar"
+    },
+    {
+     "s": "08:00",
+     "e": "10:00",
+     "t": "Fundamentos de Investigación",
+     "c": "escuela",
+     "n": "Salón A5",
+     "w": "el"
+    },
+    {
+     "s": "08:40",
+     "e": "08:55",
+     "t": "Camino a la escuela (aparte)",
+     "c": "personal",
+     "n": "",
+     "w": "dar"
+    },
+    {
+     "s": "09:00",
+     "e": "10:00",
+     "t": "Integración de Proyectos de TI",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Emmanuel Trujillo Cevallos",
+     "w": "dar"
+    },
+    {
+     "s": "09:45",
+     "e": "10:10",
+     "t": "Desayuno",
+     "c": "comida",
+     "n": "A la misma hora los dos: huevo de la lonchera",
+     "w": "ambos"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Business Intelligence",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Alejandro Medina Tovar",
+     "w": "dar"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Electromagnetismo",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "11:00",
+     "e": "12:00",
+     "t": "Ciencia de Datos",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Salvador Duarte Rodríguez",
      "w": "dar"
     },
     {
      "s": "11:00",
      "e": "12:00",
-     "t": "Hueco: tareas + colación",
+     "t": "Hueco: tareas",
      "c": "tareas",
      "n": "",
      "w": "el"
     },
     {
      "s": "12:00",
-     "e": "16:00",
-     "t": "Taller de Ética · Calidad · Estática",
+     "e": "12:15",
+     "t": "Colación",
+     "c": "comida",
+     "n": "Yogur con fruta y granola",
+     "w": "ambos"
+    },
+    {
+     "s": "12:00",
+     "e": "13:00",
+     "t": "Cloud Computing",
      "c": "escuela",
-     "n": "De 3 a 4 se le traslapan Estática y Tutorías",
+     "n": "Lab. Electrónica 1 · Andrés Ramírez Quezada",
+     "w": "dar"
+    },
+    {
+     "s": "12:00",
+     "e": "13:00",
+     "t": "Taller de Ética",
+     "c": "escuela",
+     "n": "Salón A5",
      "w": "el"
     },
     {
@@ -829,17 +1061,17 @@ window.HORARIO_BASE={
      "w": "dar"
     },
     {
-     "s": "13:15",
-     "e": "13:45",
-     "t": "Comida fuerte",
-     "c": "comida",
-     "n": "",
-     "w": "dar"
+     "s": "13:00",
+     "e": "15:00",
+     "t": "Calidad",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
     },
     {
-     "s": "13:45",
+     "s": "13:15",
      "e": "14:45",
-     "t": "Tareas",
+     "t": "Tareas o proyectos",
      "c": "tareas",
      "n": "",
      "w": "dar"
@@ -854,7 +1086,15 @@ window.HORARIO_BASE={
     },
     {
      "s": "15:00",
-     "e": "16:35",
+     "e": "16:00",
+     "t": "Estática",
+     "c": "escuela",
+     "n": "Salón B4 · se traslapa con Tutorías (A5): decide a cuál vas",
+     "w": "el"
+    },
+    {
+     "s": "15:00",
+     "e": "16:15",
      "t": "Empieza las donas",
      "c": "donas",
      "n": "",
@@ -870,50 +1110,58 @@ window.HORARIO_BASE={
     },
     {
      "s": "16:15",
-     "e": "16:35",
-     "t": "Comida fuerte",
+     "e": "16:45",
+     "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
-     "w": "el"
+     "w": "ambos"
     },
     {
-     "s": "16:35",
-     "e": "17:05",
-     "t": "Sopa y cena listas, trastes",
+     "s": "16:45",
+     "e": "17:15",
+     "t": "Sopa al termo y cena lista, trastes",
      "c": "comida",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "16:35",
-     "e": "17:15",
+     "s": "16:45",
+     "e": "17:35",
      "t": "Sigue con las donas",
      "c": "donas",
      "n": "",
      "w": "el"
     },
     {
-     "s": "17:05",
-     "e": "17:15",
+     "s": "17:15",
+     "e": "17:35",
      "t": "Donas: empacar",
      "c": "donas",
      "n": "",
      "w": "dar"
     },
     {
-     "s": "17:15",
-     "e": "17:25",
-     "t": "Sopita",
-     "c": "comida",
+     "s": "17:35",
+     "e": "17:45",
+     "t": "Salir a vender",
+     "c": "personal",
      "n": "",
      "w": "ambos"
     },
     {
-     "s": "17:25",
+     "s": "17:45",
      "e": "19:45",
      "t": "Venta de donas",
      "c": "donas",
      "n": "",
+     "w": "ambos"
+    },
+    {
+     "s": "18:30",
+     "e": "18:45",
+     "t": "Sopita en termo",
+     "c": "comida",
+     "n": "Durante la venta",
      "w": "ambos"
     },
     {
@@ -934,17 +1182,17 @@ window.HORARIO_BASE={
     },
     {
      "s": "20:20",
-     "e": "20:35",
+     "e": "20:40",
      "t": "Trastes y loncheras de mañana",
      "c": "casa",
      "n": "Pasen al refri lo de mañana",
      "w": "ambos"
     },
     {
-     "s": "20:35",
+     "s": "20:40",
      "e": "21:15",
      "t": "YouTube: subir el video o un short",
-     "c": "tareas",
+     "c": "youtube",
      "n": "",
      "w": "ambos"
     },
@@ -975,19 +1223,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "04:40",
-     "e": "05:20",
-     "t": "Se arregla para el día",
-     "c": "personal",
-     "n": "35–40 min",
-     "w": "dar"
-    },
-    {
-     "s": "04:40",
      "e": "05:05",
      "t": "Pasea a la perrita",
      "c": "perrita",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "04:40",
+     "e": "05:20",
+     "t": "Se arregla para el día",
+     "c": "personal",
+     "n": "35–40 min",
+     "w": "dar"
     },
     {
      "s": "05:05",
@@ -1018,23 +1266,23 @@ window.HORARIO_BASE={
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Pull B (~65 min) · Darlene: pierna completa ligera (~50 min) + caminata 10–15 min",
+     "n": "Él: Pull B (~65 min) · Darlene: pierna ligera (~50 min) + caminata 10–15 min",
      "w": "ambos"
     },
     {
      "s": "07:40",
      "e": "07:55",
-     "t": "Directo a la escuela, licuado en el camino",
+     "t": "Camino a la escuela con licuado",
      "c": "comida",
-     "n": "Licuado post-entreno del termo",
+     "n": "",
      "w": "ambos"
     },
     {
      "s": "08:00",
-     "e": "11:00",
-     "t": "BI · Integración de TI · Ciencia de Datos",
+     "e": "09:00",
+     "t": "Business Intelligence",
      "c": "escuela",
-     "n": "",
+     "n": "Lab. Electrónica 1 · Alejandro Medina Tovar",
      "w": "dar"
     },
     {
@@ -1042,8 +1290,16 @@ window.HORARIO_BASE={
      "e": "09:00",
      "t": "Taller de Ética",
      "c": "escuela",
-     "n": "",
+     "n": "Salón A5",
      "w": "el"
+    },
+    {
+     "s": "09:00",
+     "e": "10:00",
+     "t": "Integración de Proyectos de TI",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Emmanuel Trujillo Cevallos",
+     "w": "dar"
     },
     {
      "s": "09:00",
@@ -1054,33 +1310,81 @@ window.HORARIO_BASE={
      "w": "el"
     },
     {
+     "s": "09:45",
+     "e": "10:10",
+     "t": "Desayuno",
+     "c": "comida",
+     "n": "A la misma hora los dos: huevo de la lonchera",
+     "w": "ambos"
+    },
+    {
      "s": "10:00",
-     "e": "14:00",
-     "t": "Electromagnetismo · Calidad · Contabilidad",
+     "e": "11:00",
+     "t": "Ciencia de Datos",
      "c": "escuela",
-     "n": "",
+     "n": "Lab. Electrónica 1 · Salvador Duarte Rodríguez",
+     "w": "dar"
+    },
+    {
+     "s": "10:00",
+     "e": "11:00",
+     "t": "Electromagnetismo",
+     "c": "escuela",
+     "n": "Salón B4",
      "w": "el"
     },
     {
      "s": "11:00",
      "e": "12:00",
-     "t": "Hueco: tareas + colación",
+     "t": "Hueco: tareas",
      "c": "tareas",
      "n": "",
      "w": "dar"
     },
     {
+     "s": "11:00",
+     "e": "12:00",
+     "t": "Calidad",
+     "c": "escuela",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "12:00",
+     "e": "12:15",
+     "t": "Colación",
+     "c": "comida",
+     "n": "Yogur con fruta y granola",
+     "w": "ambos"
+    },
+    {
+     "s": "12:00",
+     "e": "13:00",
+     "t": "Cloud Computing",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Andrés Ramírez Quezada",
+     "w": "dar"
+    },
+    {
      "s": "12:00",
      "e": "14:00",
-     "t": "Cloud · IoT",
+     "t": "Contabilidad y Costos",
      "c": "escuela",
-     "n": "",
+     "n": "Salón B4",
+     "w": "el"
+    },
+    {
+     "s": "13:00",
+     "e": "14:00",
+     "t": "Internet de las Cosas",
+     "c": "escuela",
+     "n": "Lab. Electrónica 1 · Héctor Alejandro Sosa Gómez",
      "w": "dar"
     },
     {
      "s": "14:00",
      "e": "14:15",
-     "t": "Regreso a casa",
+     "t": "Regreso a casa juntos",
      "c": "personal",
      "n": "",
      "w": "ambos"
@@ -1088,7 +1392,7 @@ window.HORARIO_BASE={
     {
      "s": "14:15",
      "e": "14:45",
-     "t": "Comida fuerte",
+     "t": "Comida fuerte juntos",
      "c": "comida",
      "n": "",
      "w": "ambos"
@@ -1114,7 +1418,7 @@ window.HORARIO_BASE={
      "e": "16:15",
      "t": "Deja lista la sopa y la cena",
      "c": "comida",
-     "n": "Pueden cambiar: ella con donas y él cocina",
+     "n": "",
      "w": "dar"
     },
     {
@@ -1138,7 +1442,7 @@ window.HORARIO_BASE={
      "e": "19:45",
      "t": "Venta de donas",
      "c": "donas",
-     "n": "Celular en tripié: clips para YouTube",
+     "n": "",
      "w": "ambos"
     },
     {
@@ -1224,19 +1528,19 @@ window.HORARIO_BASE={
     },
     {
      "s": "08:55",
-     "e": "09:30",
-     "t": "Se baña y se arregla",
-     "c": "personal",
-     "n": "",
-     "w": "dar"
-    },
-    {
-     "s": "08:55",
      "e": "09:20",
      "t": "Pasea a la perrita",
      "c": "perrita",
      "n": "",
      "w": "el"
+    },
+    {
+     "s": "08:55",
+     "e": "09:30",
+     "t": "Se baña y se arregla",
+     "c": "personal",
+     "n": "",
+     "w": "dar"
     },
     {
      "s": "09:20",

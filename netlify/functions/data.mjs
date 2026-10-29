@@ -3,7 +3,7 @@
 // Protegido con el código de pareja: variable de entorno APP_PIN en Netlify.
 import { getStore } from "@netlify/blobs";
 
-const KEY = /^(\d{4}-\d{2}-\d{2}\/(dar|el)|config\/horario)$/;
+const KEY = /^(\d{4}-\d{2}-\d{2}\/(dar|el)|config\/horario|msg\/(dar|el))$/;
 const DAYKEY = /^\d{4}-\d{2}-\d{2}\/(dar|el)$/;
 const PREFIX = /^\d{4}(-\d{2}(-\d{2})?)?$/;
 
@@ -48,7 +48,8 @@ export default async (req) => {
     const { key, value } = body || {};
     if (!KEY.test(key || "")) return json({ error: "Clave inválida." }, 400);
     if (!value || typeof value !== "object") return json({ error: "Falta el registro." }, 400);
-    if (JSON.stringify(value).length > 300_000) return json({ error: "Registro demasiado grande." }, 413);
+    const limit = key.startsWith("msg/") ? 3_000_000 : 300_000; // los mensajes pueden traer una foto
+    if (JSON.stringify(value).length > limit) return json({ error: "Es demasiado grande. Prueba con otra foto." }, 413);
     await store.setJSON(key, value);
     return json({ ok: true });
   }
