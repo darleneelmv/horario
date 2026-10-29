@@ -495,7 +495,7 @@ function hourTable() {
         const chip = who === "ambos" && b.w && b.w !== "ambos" ? `<em class="wc">${b.w === "dar" ? "D" : "B"}</em>` : "";
         const sub = b.c === "escuela" && b.n && starts ? `<small>${esc(b.n)}</small>` : "";
         const when = b.c === "sueno" ? (b.s ? "desde " + fmt(b.s) : "") : starts ? rango(b.s, b.e) : "sigue · hasta " + fmt(b.e);
-        return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"}" style="${vars(b.c)}"><i></i><div><span class="hm">${when}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div></div>`;
+        return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"} ${/^Traslape/.test(b.t) ? "warn" : ""}" style="${vars(b.c)}"><i></i><div><span class="hm">${when}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div></div>`;
       }).join("");
       return `<td class="hc ${i === ti ? "today" : ""} ${isNow ? "now" : ""}" style="${vars(dom)}">${html}</td>`;
     }).join("");

@@ -1,6 +1,6 @@
 /* Horario base de Darlene y Berny. Los cambios hechos en la página se guardan aparte y tienen prioridad. */
 window.HORARIO_BASE={
- "version": 5,
+ "version": 6,
  "days": [
   {
    "k": "lun",
@@ -1135,9 +1135,9 @@ window.HORARIO_BASE={
     {
      "s": "15:00",
      "e": "16:00",
-     "t": "Estática",
+     "t": "Traslape: Estática (B4) / Tutorías (A5)",
      "c": "escuela",
-     "n": "Salón B4 · se traslapa con Tutorías (A5): decide a cuál vas",
+     "n": "Las dos materias caen a la misma hora. Es el único traslape de su horario: decide a cuál vas",
      "w": "el"
     },
     {

@@ -398,3 +398,5 @@ input[type=checkbox]:checked::after{content:"";width:8px;height:4px;border-left:
 .chk{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer}
 .cal .due{position:absolute;right:16px;bottom:3px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)}
 .card .steps li{grid-template-columns:96px 1fr;background:transparent}
+.ln.warn{background:rgba(221,184,124,.14);border:1px dashed var(--k-comida);border-radius:3px;padding:3px 4px}
+.ln.warn .tt{color:#f3cf8a}
