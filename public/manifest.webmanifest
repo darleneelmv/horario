@@ -1,0 +1,13 @@
+{
+  "name": "Nuestra semana",
+  "short_name": "Nuestra semana",
+  "start_url": "/#hoy",
+  "display": "standalone",
+  "background_color": "#0a0708",
+  "theme_color": "#0a0708",
+  "lang": "es-MX",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
