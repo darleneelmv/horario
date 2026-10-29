@@ -20,7 +20,7 @@ export default async (req) => {
     const saved = await getStore({ name: "agenda", consistency: "strong" }).get("config/horario", { type: "json" });
     if (saved && Array.isArray(saved.days)) horario = saved;
   } catch {}
-  const ics = buildICS(horario, who, modo, who === "el" ? "Él" : "Darlene");
+  const ics = buildICS(horario, who, modo, who === "el" ? "Berny" : "Darlene");
   return new Response(ics, {
     headers: {
       "content-type": "text/calendar; charset=utf-8",

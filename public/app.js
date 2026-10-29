@@ -1,4 +1,4 @@
-/* Nuestra semana · agenda de Darlene y él.
+/* Nuestra semana · agenda de Darlene y Berny.
    Datos: se guardan en este celular (localStorage) y, si hay código de pareja, se sincronizan con Netlify. */
 "use strict";
 
@@ -8,8 +8,9 @@ const CATS = {
   casa: "Casa y mascotas", perrita: "Perrita", youtube: "YouTube", tareas: "Tareas", ocio: "Ocio",
   colchon: "Colchón", personal: "Arreglo y traslados", sueno: "Dormir",
 };
-const WHO = { dar: "Darlene", el: "Él" };
-const WHO_OPTS = { ambos: "Los dos", dar: "Darlene", el: "Él" };
+const WHO = { dar: "Darlene", el: "Berny" };
+const NICK = { dar: "Bubucita", el: "Duducito" };
+const WHO_OPTS = { ambos: "Los dos", dar: "Darlene", el: "Berny" };
 const DAYS_SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 const ING = ["Venta de donas", "YouTube", "Empresa / proyectos", "Otro ingreso"];
@@ -49,7 +50,7 @@ let entries = LS.get("ns.entries", {});
 let pending = LS.get("ns.pending", []);
 let horario = LS.get("ns.horario", null) || clone(window.HORARIO_BASE);
 let todoDone = LS.get("ns.todo", []);
-let msgs = LS.get("ns.msgs", {}); // mensajes por destinatario: msgs.dar = lo que él le dejó a Darlene
+let msgs = LS.get("ns.msgs", {}); // mensajes por destinatario: msgs.dar = lo que Berny le dejó a Darlene
 const ui = { pinMsg: null, loveFoto: null, loveMsg: "", tableWho: settings.who, who: settings.who, calMonth: today().slice(0, 7), moneyMonth: today().slice(0, 7), semDay: dayIdx(today()), edit: null, lastRoute: "" };
 
 const saveSettings = () => LS.set("ns.settings", settings);
@@ -223,7 +224,7 @@ const LILY = `<svg class="lily" viewBox="0 0 300 360" aria-hidden="true"><defs><
 function viewHoy() {
   const t = today();
   return `<div class="hero"><canvas id="leopard" aria-hidden="true"></canvas>
-    <div class="hero-in"><span class="eyebrow">Darlene &amp; él · TecNM Puruándiro</span><h1>Nuestra semana</h1>
+    <div class="hero-in"><span class="eyebrow">Darlene Bubucita &amp; Berny Duducito · TecNM Puruándiro</span><h1>Nuestra semana</h1>
     <span class="eyebrow" style="color:var(--rose-2)">${esc(longDate(t))}</span></div>${LILY}</div>
   <div class="wrap">
     ${loveSection()}
@@ -236,13 +237,13 @@ const ago = (u) => { const mn = Math.round((Date.now() - u) / 60000); if (mn < 1
 function loveSection() {
   const me = settings.who, other = me === "dar" ? "el" : "dar";
   const inbox = msgs[me], sent = msgs[other];
-  return `<section class="love"><div class="sec-head"><h2>Para ti</h2><div class="meta">${WHO[me]} <span>${me === "dar" ? "de él" : "de Darlene"}</span></div></div>
+  return `<section class="love"><div class="sec-head"><h2>Para ti, ${NICK[me]}</h2><div class="meta">${WHO[me]} <span>de tu ${NICK[other]}</span></div></div>
     <div class="two">
       <div class="lovecard">${inbox
-        ? `${inbox.foto ? `<img src="${inbox.foto}" alt="Foto que te dejó ${WHO[other]}">` : ""}${inbox.texto ? `<p class="lovetxt">${esc(inbox.texto)}</p>` : ""}<span class="sub">De ${WHO[other]} · ${ago(inbox.u)}</span>`
-        : `<p class="lovetxt" style="font-size:30px">Aquí aparece lo que te deje ${me === "dar" ? "él" : "Darlene"}</p><span class="sub">Una nota linda o una foto. ¿Este celular no es de ${WHO[me]}? Cámbialo en Ajustes.</span>`}</div>
-      <form class="card" data-form="love"><h3>Déjale algo a ${WHO[other] === "Él" ? "él" : "Darlene"}</h3>
-        <textarea name="texto" maxlength="500" placeholder="Escríbele algo bonito…" aria-label="Nota para ${WHO[other]}" style="min-height:90px">${esc(ui.loveDraft || "")}</textarea>
+        ? `${inbox.foto ? `<img src="${inbox.foto}" alt="Foto que te dejó ${WHO[other]}">` : ""}${inbox.texto ? `<p class="lovetxt">${esc(inbox.texto)}</p>` : ""}<span class="sub">De tu ${NICK[other]}, ${WHO[other]} · ${ago(inbox.u)}</span>`
+        : `<p class="lovetxt" style="font-size:30px">Aquí aparece lo que te deje tu ${NICK[other]}</p><span class="sub">Una nota linda o una foto. ¿Este celular no es de ${WHO[me]}? Cámbialo en Ajustes.</span>`}</div>
+      <form class="card" data-form="love"><h3>Déjale algo a tu ${NICK[other]}</h3>
+        <textarea name="texto" maxlength="500" placeholder="Escríbele algo bonito a tu ${NICK[other]}…" aria-label="Nota para ${WHO[other]}" style="min-height:90px">${esc(ui.loveDraft || "")}</textarea>
         ${ui.loveFoto ? `<img class="lovepre" src="${ui.loveFoto}" alt="Foto lista para enviar">` : ""}
         <div class="row2"><label class="btn" for="lovefoto">${ui.loveFoto ? "Cambiar foto" : "Agregar foto"}</label><input id="lovefoto" type="file" accept="image/*" data-act="lovefoto" hidden>
           ${ui.loveFoto ? '<button class="btn ghost" type="button" data-act="lovenofoto">Quitar foto</button>' : ""}<button class="btn primary" type="submit">Enviar</button></div>
@@ -347,7 +348,7 @@ function dayPanel(date, isHoy) {
         ${date !== today() ? `<a class="btn sm ghost" href="#dia-${today()}">Hoy</a>` : ""}<a class="btn sm ghost" href="#agenda">Calendario</a></div>`;
   return `<section>${head}
     <div class="tiles"><div class="tile ing"><small>Ingresos</small><b>${money(mo.ing)}</b></div><div class="tile egr"><small>Egresos</small><b>${money(mo.egr)}</b></div>
-      <div class="tile"><small>Neto</small><b>${money(mo.net)}</b></div><div class="tile"><small>Avance</small><b>${pD ?? 0}% · ${pE ?? 0}%</b><span>Darlene · Él</span></div></div>
+      <div class="tile"><small>Neto</small><b>${money(mo.net)}</b></div><div class="tile"><small>Avance</small><b>${pD ?? 0}% · ${pE ?? 0}%</b><span>Darlene · Berny</span></div></div>
     <div class="who-tabs seg" role="tablist">${["dar", "el"].map((w) => `<button type="button" data-act="who" data-who="${w}" aria-pressed="${ui.who === w}">${WHO[w]}</button>`).join("")}</div>
     <div class="people" data-who="${ui.who}" data-date="${date}">${personPanel(date, "dar")}${personPanel(date, "el")}</div>
   </section>`;
@@ -373,11 +374,11 @@ function viewAgenda() {
       const d = day(dayIdx(dt));
       return `<a href="#dia-${dt}" class="${dt.slice(0, 7) !== ym ? "out" : ""} ${dt === t ? "today" : ""}" aria-label="${esc(longDate(dt))}">
         <span class="num">${+dt.slice(8)}<em>${hasVenta(d) ? "venta" : "libre"}</em></span>
-        <span class="pb">D<div><span style="width:${pD || 0}%"></span></div></span><span class="pb">É<div><span style="width:${pE || 0}%"></span></div></span>
+        <span class="pb">D<div><span style="width:${pD || 0}%"></span></div></span><span class="pb">B<div><span style="width:${pE || 0}%"></span></div></span>
         ${m.ing || m.egr ? `<span class="net ${m.net >= 0 ? "pos" : "neg"}">${m.net >= 0 ? "+" : "−"}${money(Math.abs(m.net)).replace(".00", "")}</span>` : ""}
         ${hasNote ? '<span class="dot" title="Tiene notas"></span>' : ""}</a>`;
     }).join("")}</div></div>
-    <p class="sub">Toca un día para registrar el checklist, el dinero y las notas de cada uno. Barras: avance de Darlene (D) y de él (É). Punto lila: hay notas.</p>
+    <p class="sub">Toca un día para registrar el checklist, el dinero y las notas de cada uno. Barras: avance de Darlene (D) y de Berny (B). Punto lila: hay notas.</p>
     <div class="tiles"><div class="tile ing"><small>Ingresos del mes</small><b>${money(mo.ing)}</b></div><div class="tile egr"><small>Egresos del mes</small><b>${money(mo.egr)}</b></div>
       <div class="tile"><small>Neto</small><b>${money(mo.net)}</b></div><div class="tile"><small>Días registrados</small><b>${registrados} / ${dates.length}</b></div></div>
   </section></div>`;
@@ -397,7 +398,7 @@ function weekGrid() {
   const blk = (b, lane) => {
     const top = (toMin(b.s) - GS) * PX, ht = (toMin(b.e) - toMin(b.s)) * PX;
     const cls = lane === "dar" ? "l" : lane === "el" ? "r" : "";
-    const who = lane === "dar" ? "D · " : lane === "el" ? "É · " : "";
+    const who = lane === "dar" ? "D · " : lane === "el" ? "B · " : "";
     const lbl = ht >= 13 ? `<b>${who}${esc(b.t)}</b>${ht >= 44 && !cls ? `<em>${fmt(b.s)}–${fmt(b.e)}</em>` : ""}` : "";
     return `<div class="g ${b.c} ${cls} ${ht < 22 ? "tiny" : ""}" data-s="${toMin(b.s)}" data-e="${toMin(b.e)}" style="top:${top}px;height:${Math.max(4, ht - 1)}px;${vars(b.c)}" title="${esc(who + b.t)} · ${fmt(b.s)}–${fmt(b.e)}">${lbl}</div>`;
   };
@@ -445,7 +446,7 @@ function hourTable() {
       const isNow = i === ti && nm >= hs && nm < he;
       const html = lines.map((b) => {
         const starts = b.s && toMin(b.s) >= hs;
-        const chip = who === "ambos" && b.w && b.w !== "ambos" ? `<em class="wc">${b.w === "dar" ? "D" : "É"}</em>` : "";
+        const chip = who === "ambos" && b.w && b.w !== "ambos" ? `<em class="wc">${b.w === "dar" ? "D" : "B"}</em>` : "";
         const sub = b.c === "escuela" && b.n && starts ? `<small>${esc(b.n)}</small>` : "";
         return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"}" style="${vars(b.c)}"><i></i><span class="hm">${starts ? fmtS(b.s) : b.c === "sueno" ? "" : "sigue"}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div>`;
       }).join("");
@@ -485,7 +486,7 @@ function viewSemana() {
   return `<div class="wrap">
   <section><div class="sec-head"><h2>Plan semanal</h2><div class="meta"><a class="btn sm" href="#ajustes" data-act="gocal">Agregar a mi calendario</a></div></div>
     <p class="sub">Hora por hora, como el horario de la escuela. La columna de hoy y la hora actual van marcadas en rosa. En el celular, desliza para ver todos los días.</p>
-    <div class="row2"><div class="seg" role="group" aria-label="Ver horario de">${[["dar", "Darlene"], ["el", "Él"], ["ambos", "Los dos"]].map(([k, l]) => `<button type="button" data-act="tablewho" data-w="${k}" aria-pressed="${ui.tableWho === k}">${l}</button>`).join("")}</div></div>
+    <div class="row2"><div class="seg" role="group" aria-label="Ver horario de">${[["dar", "Darlene"], ["el", "Berny"], ["ambos", "Los dos"]].map(([k, l]) => `<button type="button" data-act="tablewho" data-w="${k}" aria-pressed="${ui.tableWho === k}">${l}</button>`).join("")}</div></div>
     ${hourTable()}</section>
   <section><div class="sec-head"><h2>Editar el horario</h2><div class="meta"><span>${horario.u ? "Editado " + new Date(horario.u).toLocaleDateString("es-MX", { day: "numeric", month: "short" }) : "Horario original"}</span></div></div>
     <p class="sub">Los cambios se guardan para los dos y se reflejan en el calendario del celular de cada uno.</p>
@@ -577,11 +578,11 @@ function bindChart() {
 const TODO = [
   ["Turnos en las donas", "Mientras uno sigue con las donas, el otro deja lista la sopa y la cena, lava trastes y arma loncheras (o al revés). Al volver de vender solo calientan y cenan."],
   ["Salir juntos para ahorrar gasolina", "Martes, miércoles y viernes regresan juntos: Darlene usa la espera en la escuela para tareas o proyectos. Solo el jueves ella se va aparte, y el lunes no tiene clases."],
-  ["Darlene arranca las donas lunes y jueves", "Esos días ella llega antes y él se suma a las 4:15. Dejen pesados los secos y listo el glaseado: miércoles en la noche (jue a sáb) y domingo (lun y mar)."],
-  ["Los huecos de él son su tarea y su YouTube", "Lunes 11 a 2, martes 1 a 3, miércoles 1 a 2, jueves 11 a 12 y viernes 9 a 10: unas 6 h con laptop en la biblioteca."],
+  ["Darlene arranca las donas lunes y jueves", "Esos días Darlene llega antes y Berny se suma a las 4:15. Dejen pesados los secos y listo el glaseado: miércoles en la noche (jue a sáb) y domingo (lun y mar)."],
+  ["Los huecos de Berny son su tarea y su YouTube", "Lunes 11 a 2, martes 1 a 3, miércoles 1 a 2, jueves 11 a 12 y viernes 9 a 10: unas 6 h con laptop en la biblioteca."],
   ["Lunes de Darlene: 3 h enfocadas en la mañana", "De 8:30 a 11:30, recién desayunada y sin celular. Después pone la lavadora, edita YouTube y hace tarea."],
   ["Miércoles: día libre de donas", "2:30 h juntos para YouTube y proyectos. Solo queda la limpieza de mascotas."],
-  ["Todo listo desde la noche", "A las 9:15 pm quedan en el carro mochilas, ropa y loncheras. En la mañana él solo licúa y lo pone en termos."],
+  ["Todo listo desde la noche", "A las 9:15 pm quedan en el carro mochilas, ropa y loncheras. En la mañana Berny solo licúa y lo pone en termos."],
   ["YouTube sin tiempo extra", "Celular en tripié mientras preparan y venden: de ahí salen los shorts. Un video editado por semana."],
   ["Se recorta la tarea, no el sueño", "Entre semana se duermen a las 9:30 pm: 7 h justas hasta las 4:30."],
   ["Registren el dinero cada día", "Cada venta y cada gasto en su día de la agenda. En Dinero verán cuánto deja cada día de venta."],
@@ -589,13 +590,13 @@ const TODO = [
 function viewGuia() {
   return `<div class="wrap">
   <section><div class="sec-head"><h2>Domingo de meal prep</h2><div class="meta">9:30 – 12:30 <span>3 h</span></div></div>
-    <div class="two"><div class="torn" data-torn><h3>Orden de trabajo · él en la estufa, Darlene en la tabla</h3><ol class="steps">
+    <div class="two"><div class="torn" data-torn><h3>Orden de trabajo · Berny en la estufa, Darlene en la tabla</h3><ol class="steps">
       <li><b class="tm">9:30</b><span><b>Frijoles</b> (remojados desde el sábado) a la olla exprés y <b>arroz</b> a la arrocera.</span></li>
       <li><b class="tm">9:40</b><span><b>Pollo</b> (2.3 kg) al horno o a la plancha, sazonado de 2 formas. <b>Camote y papa</b> en la misma vuelta.</span></li>
       <li><b class="tm">10:00</b><span>Verdura desinfectada y picada. Base de <b>sopa de verduras</b> (días A) y <b>crema de calabacita</b> (días B). La pasta se cuece aparte.</span></li>
       <li><b class="tm">11:00</b><span><b>Desayunos de huevo</b>: burritos con espinaca (A) y muffins de huevo con champiñón (B).</span></li>
       <li><b class="tm">11:30</b><span><b>Kits de licuado</b> en ziploc y <b>colaciones</b>: yogur con fruta en frascos, granola y almendras aparte.</span></li>
-      <li><b class="tm">12:00</b><span><b>Porcionar y etiquetar</b>. En lonchera va la comida fuerte de él (lun a mié) y la de Darlene (mar y mié).</span></li>
+      <li><b class="tm">12:00</b><span><b>Porcionar y etiquetar</b>. En lonchera va la comida fuerte de Berny (lun a mié) y la de Darlene (mar y mié).</span></li>
     </ol><span class="scrib" aria-hidden="true">disciplina hoy</span></div>
     <div class="store">
       <div class="box"><span class="pillhead">Refri · lun a mié</span><ul><li>Comidas fuertes en tupper</li><li>Sopas y cremas</li><li>Desayunos de huevo</li><li>Yogures armados y ensaladas</li></ul></div>
@@ -738,7 +739,7 @@ document.addEventListener("submit", async (ev) => {
     const to = settings.who === "dar" ? "el" : "dar";
     msgs[to] = { de: settings.who, texto, foto: ui.loveFoto || null, u: Date.now() };
     LS.set("ns.msgs", msgs); queue("msg/" + to);
-    ui.loveFoto = null; ui.loveDraft = ""; ui.loveMsg = `Listo, ${to === "el" ? "él" : "Darlene"} lo verá al abrir la app.`;
+    ui.loveFoto = null; ui.loveDraft = ""; ui.loveMsg = `Listo, tu ${NICK[to]} lo verá al abrir la app.`;
     return render(true);
   }
   if (f.dataset.form === "task") {

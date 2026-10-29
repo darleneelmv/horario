@@ -62,7 +62,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Push A (~65 min) · Darlene: glúteo + femoral (~55 min) + caminata inclinada 15 min",
+     "n": "Berny: Push A (~65 min) · Darlene: glúteo + femoral (~55 min) + caminata inclinada 15 min",
      "w": "ambos"
     },
     {
@@ -383,7 +383,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Pull A (~65 min) · Darlene: espalda + abs (~50 min) + cardio suave 20 min",
+     "n": "Berny: Pull A (~65 min) · Darlene: espalda + abs (~50 min) + cardio suave 20 min",
      "w": "ambos"
     },
     {
@@ -672,7 +672,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Legs A + abs (~70 min) · Darlene: cuádriceps + glúteo (~55 min) + caminata 15 min",
+     "n": "Berny: Legs A + abs (~70 min) · Darlene: cuádriceps + glúteo (~55 min) + caminata 15 min",
      "w": "ambos"
     },
     {
@@ -937,7 +937,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Push B (~70 min) · Darlene: hombro, tríceps y bíceps (~60 min) + intervalos 10 min",
+     "n": "Berny: Push B (~70 min) · Darlene: hombro, tríceps y bíceps (~60 min) + intervalos 10 min",
      "w": "ambos"
     },
     {
@@ -1266,7 +1266,7 @@ export default {
      "e": "07:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: Pull B (~65 min) · Darlene: pierna ligera (~50 min) + caminata 10–15 min",
+     "n": "Berny: Pull B (~65 min) · Darlene: pierna ligera (~50 min) + caminata 10–15 min",
      "w": "ambos"
     },
     {
@@ -1515,7 +1515,7 @@ export default {
      "e": "08:40",
      "t": "Gym",
      "c": "gym",
-     "n": "Él: legs + hombro + abs + cardio · Darlene: espalda + abs (~50 min) + cardio suave 25 min",
+     "n": "Berny: legs + hombro + abs + cardio · Darlene: espalda + abs (~50 min) + cardio suave 25 min",
      "w": "ambos"
     },
     {
@@ -1627,7 +1627,7 @@ export default {
      "e": "16:30",
      "t": "Deja lista la sopa y la cena",
      "c": "comida",
-     "n": "Pueden cambiar: ella con donas y él cocina",
+     "n": "Pueden cambiar: Darlene con donas y Berny cocina",
      "w": "dar"
     },
     {
@@ -1716,7 +1716,7 @@ export default {
      "e": "08:15",
      "t": "Caminata larga con la perrita",
      "c": "perrita",
-     "n": "Los dos. Es el descanso activo de Darlene y la caminata suave de él",
+     "n": "Los dos. Es el descanso activo de Darlene y la caminata suave de Berny",
      "w": "ambos"
     },
     {
@@ -1796,7 +1796,7 @@ export default {
      "e": "16:30",
      "t": "Deja lista la sopa y la cena",
      "c": "comida",
-     "n": "Pueden cambiar: ella con donas y él cocina",
+     "n": "Pueden cambiar: Darlene con donas y Berny cocina",
      "w": "dar"
     },
     {

@@ -1,12 +1,12 @@
 # Nuestra semana
 
-Agenda de Darlene y él: horario semanal, checklist diario de cada uno, ingresos y egresos, notas por día, calendario del mes y su horario en el calendario del celular.
+Agenda de Darlene Bubucita y Berny Duducito: horario semanal, checklist diario de cada uno, ingresos y egresos, notas por día, calendario del mes y su horario en el calendario del celular.
 
 ## Qué tiene
 
 - **Hoy**: arriba, **Para ti**: una nota linda o una foto que el otro te dejó, y donde tú le dejas algo (se sincroniza entre los dos celulares). Después, qué le toca a cada quien en este momento (en vivo) y el día de hoy para registrar.
 - **Agenda**: calendario del mes. Tocar un día abre su checklist, pendientes, dinero y notas, con una sección para cada uno.
-- **Semana**: el horario hora por hora, como el de la escuela, con cada clase, salón o maestro. Se puede ver el de Darlene, el de él o los dos. Desde aquí se **edita** (horas, actividades, quién lo hace, notas) y los cambios se guardan para los dos.
+- **Semana**: el horario hora por hora, como el de la escuela, con cada clase, salón o maestro. Se puede ver el de Darlene, el de Berny o los dos. Desde aquí se **edita** (horas, actividades, quién lo hace, notas) y los cambios se guardan para los dos.
 - **Dinero**: ingresos, egresos y neto del mes, gráfica por día, totales por categoría y por persona.
 - **Guía**: meal prep del domingo y los cambios recomendados.
 - **Ajustes**: quién usa el celular, código de pareja, agregar el horario al calendario del celular y respaldos.
