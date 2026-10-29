@@ -1,8 +1,8 @@
 // Calendario para suscribirse desde el celular (webcal). Devuelve el horario semanal de una persona.
 // URL: /api/calendar?who=dar|el&k=CODIGO&modo=importante|todo
 import { getStore } from "@netlify/blobs";
-import base from "./lib/horario-base.mjs";
-import { buildICS } from "./lib/ics.mjs";
+import base from "../../shared/horario-base.mjs";
+import { buildICS } from "../../shared/ics.mjs";
 
 const readPin = () => {
   try { if (globalThis.Netlify?.env?.get) return Netlify.env.get("APP_PIN"); } catch {}

@@ -11,7 +11,27 @@ Agenda de Darlene Bubucita y Berny Duducito: horario semanal, checklist diario d
 - **Guía**: meal prep del domingo y los cambios recomendados.
 - **Ajustes**: quién usa el celular, código de pareja, agregar el horario al calendario del celular y respaldos.
 
-## Publicar en Netlify (una sola vez)
+## Publicar en Cloudflare Pages (gratis, recomendado)
+
+1. Crea una cuenta gratis en [dash.cloudflare.com](https://dash.cloudflare.com).
+2. **Workers & Pages → Create → Pages → Connect to Git** → GitHub → elige el repo `horario`.
+3. Configuración de build:
+   - Framework preset: **None**
+   - Build command: *(vacío)*
+   - Build output directory: **`public`**
+   Toca **Save and Deploy**.
+4. Crea el almacenamiento: **Storage & Databases → KV → Create** con el nombre `agenda`.
+5. En tu proyecto de Pages: **Settings → Bindings → Add → KV namespace**:
+   - Variable name: **`AGENDA`**
+   - KV namespace: `agenda`
+6. **Settings → Variables and Secrets → Add**:
+   - Type: Secret · Name: **`APP_PIN`** · Value: su código secreto.
+7. **Deployments → (último) → Retry deployment** para que tome el KV y el código.
+8. Abre tu sitio (algo como `https://horario.pages.dev`).
+
+Cada cambio que se suba a GitHub se publica solo.
+
+## Publicar en Netlify (alternativa)
 
 1. Entra a [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import an existing project** → **GitHub** → elige el repo `horario`.
 2. Netlify detecta la configuración sola (`netlify.toml`). No hace falta comando de build. Toca **Deploy**.
@@ -32,7 +52,7 @@ Agenda de Darlene Bubucita y Berny Duducito: horario semanal, checklist diario d
 ## Cómo se guardan los datos
 
 - Todo se guarda primero en el celular, así que funciona aunque no haya internet.
-- Con el código de pareja, se sincroniza con Netlify Blobs (almacenamiento incluido en el plan gratis): lo que registra uno lo ve el otro.
+- Con el código de pareja, se sincroniza con el almacenamiento del servicio (Cloudflare KV o Netlify Blobs, ambos gratis): lo que registra uno lo ve el otro.
 - Cada día de cada persona es un registro aparte, así que pueden escribir al mismo tiempo sin pisarse.
 - En **Ajustes → Respaldo** pueden descargar una copia de todo cuando quieran.
 
@@ -43,10 +63,9 @@ public/                 la página (HTML, CSS, JS, iconos)
   horario-base.js       horario original
   app.js                la app
   ics.js                genera el calendario .ics
-netlify/functions/
-  data.mjs              guarda y lee registros (/api/data), protegido con APP_PIN
-  calendar.mjs          calendario para suscribirse (/api/calendar)
-  lib/horario-base.mjs  copia del horario original para el calendario
+functions/api/          servidor en Cloudflare Pages (data.js y calendar.js)
+netlify/functions/      servidor en Netlify (data.mjs y calendar.mjs)
+shared/                 horario original y generador del calendario, usados por los dos
 ```
 
-Si cambian el horario original en el código, cambien también `netlify/functions/lib/horario-base.mjs` (es el mismo contenido). Los cambios hechos desde la página no necesitan esto.
+Si cambian el horario original en el código, cambien también `shared/horario-base.mjs` (es el mismo contenido que `public/horario-base.js`). Los cambios hechos desde la página no necesitan esto.
