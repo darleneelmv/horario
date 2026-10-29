@@ -3,7 +3,7 @@
 // Protegido con el código de pareja: variable de entorno APP_PIN en Netlify.
 import { getStore } from "@netlify/blobs";
 
-const KEY = /^(\d{4}-\d{2}-\d{2}\/(dar|el)|config\/horario|msg\/(dar|el))$/;
+const KEY = /^(\d{4}-\d{2}-\d{2}\/(dar|el)|config\/(horario|deudas)|msg\/(dar|el))$/;
 const DAYKEY = /^\d{4}-\d{2}-\d{2}\/(dar|el)$/;
 const PREFIX = /^\d{4}(-\d{2}(-\d{2})?)?$/;
 

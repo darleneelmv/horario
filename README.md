@@ -8,6 +8,7 @@ Agenda de Darlene Bubucita y Berny Duducito: horario semanal, checklist diario d
 - **Agenda**: calendario del mes. Tocar un día abre su checklist, pendientes, dinero y notas, con una sección para cada uno.
 - **Semana**: el horario hora por hora, como el de la escuela, con cada clase, salón o maestro. Se puede ver el de Darlene, el de Berny o los dos. Desde aquí se **edita** (horas, actividades, quién lo hace, notas) y los cambios se guardan para los dos.
 - **Dinero**: ingresos, egresos y neto del mes, gráfica por día, totales por categoría y por persona.
+- **Deudas**: lo que deben pagar y lo que les deben, con fecha límite, responsable, abonos y avisos de vencido o por vencer. Los pagos se pueden anotar solos en Dinero.
 - **Guía**: meal prep del domingo y los cambios recomendados.
 - **Ajustes**: quién usa el celular, código de pareja, agregar el horario al calendario del celular y respaldos.
 

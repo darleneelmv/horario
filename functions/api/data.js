@@ -2,7 +2,7 @@
 // Necesita: variable secreta APP_PIN y un KV namespace conectado con el nombre AGENDA.
 // Los días se guardan agrupados por mes y persona ("m/AAAA-MM/dar") para gastar pocas lecturas.
 const DAYKEY = /^(\d{4}-\d{2})-\d{2}\/(dar|el)$/;
-const SINGLE = /^(config\/horario|msg\/(dar|el))$/;
+const SINGLE = /^(config\/(horario|deudas)|msg\/(dar|el))$/;
 const MONTH = /^\d{4}-\d{2}$/;
 
 const json = (data, status = 200) =>

@@ -362,3 +362,38 @@ input[type=checkbox]:checked::after{content:"";width:8px;height:4px;border-left:
 .ln .tt{overflow-wrap:break-word;hyphens:auto}
 .sync{white-space:nowrap}
 @media (max-width:420px){.brand{font-size:25px}.sync{font-size:10px;padding:4px 8px}}
+
+/* horas de inicio y fin */
+.ln{grid-template-columns:7px 1fr}
+.ln .hm{display:block;font-size:10px;line-height:1.2;margin-bottom:1px}
+.checks label{grid-template-columns:20px 92px 1fr}
+.checks .tm{font-size:10.5px;white-space:nowrap}
+@media (max-width:480px){.checks label{grid-template-columns:18px 84px 1fr;gap:8px}}
+
+/* navegación con 7 secciones */
+.botnav{grid-template-columns:repeat(7,1fr)}
+.botnav a{font-size:8px;letter-spacing:.06em}
+.botnav svg{width:20px;height:20px}
+.topnav a{padding:8px 10px}
+
+/* deudas */
+.debts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.debt{border:1px solid var(--hair);border-left:3px solid var(--k-escuela);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:8px;background:rgba(0,0,0,.35)}
+.debt.bad{border-left-color:var(--bad)}
+.debt.warn{border-left-color:var(--warn)}
+.debt.ok{border-left-color:var(--ok);opacity:.75}
+.dtop{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.dtop .dc{font-size:15px;flex:1;min-width:140px}
+.dtop .amt{font-family:var(--mono);font-size:16px;font-weight:600}
+.dtop .amt small{font-size:11px;color:var(--muted);font-weight:400}
+.dmeta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
+.dmeta b{color:var(--ink);font-weight:600}
+.pill{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--hair);color:var(--muted);white-space:nowrap}
+.pill.bad{color:#fff;background:var(--bad);border-color:var(--bad)}
+.pill.warn{color:#1a1206;background:var(--warn);border-color:var(--warn)}
+.pill.ok{color:#0c1a10;background:var(--ok);border-color:var(--ok)}
+.abonos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;font-size:12px;border-top:1px dashed var(--hair)}
+.abonos li{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:4px 0;color:var(--muted)}
+.abonos b{font-family:var(--mono);color:var(--ink)}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.cal .due{position:absolute;right:16px;bottom:3px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)}

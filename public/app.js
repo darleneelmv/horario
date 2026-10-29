@@ -13,8 +13,8 @@ const NICK = { dar: "Bubucita", el: "Duducito" };
 const WHO_OPTS = { ambos: "Los dos", dar: "Darlene", el: "Berny" };
 const DAYS_SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-const ING = ["Venta de donas", "YouTube", "Empresa / proyectos", "Otro ingreso"];
-const EGR = ["Insumos de donas", "Súper y comida", "Escuela", "Transporte y gasolina", "Mascotas", "Gym", "Casa y servicios", "Personal", "Otro gasto"];
+const ING = ["Venta de donas", "YouTube", "Empresa / proyectos", "Cobro de deuda", "Otro ingreso"];
+const EGR = ["Insumos de donas", "Súper y comida", "Escuela", "Transporte y gasolina", "Mascotas", "Gym", "Casa y servicios", "Pago de deuda", "Personal", "Otro gasto"];
 const MEALS = ["Licuado", "Desayuno", "Colación", "Comida", "Sopita", "Cena"];
 const HABITS = [["sueno", "Dormí 7 h o más"], ["agua", "Tomé 2 L de agua"]];
 const CHECK_CATS = ["gym", "escuela", "proyecto", "donas", "perrita", "casa", "youtube", "tareas", "ocio"];
@@ -23,6 +23,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const toMin = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
 const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+const fmtS = (t) => { let [h, m] = t.split(":").map(Number); h = h % 12 || 12; return `${h}:${String(m).padStart(2, "0")}`; };
+const rango = (s, e) => `${fmtS(s)}–${fmt(e)}`;
 const fmt = (t) => { let [h, m] = t.split(":").map(Number); const ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; return `${h}:${String(m).padStart(2, "0")} ${ap}`; };
 const durTxt = (m) => { const h = Math.floor(m / 60), r = m % 60; return (h ? h + " h" : "") + (h && r ? " " : "") + (r ? r + " min" : "") || "0 min"; };
 const dur = (m) => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")}`;
@@ -50,8 +52,9 @@ let entries = LS.get("ns.entries", {});
 let pending = LS.get("ns.pending", []);
 let horario = LS.get("ns.horario", null) || clone(window.HORARIO_BASE);
 let todoDone = LS.get("ns.todo", []);
+let deudas = LS.get("ns.deudas", { items: [], u: 0 });
 let msgs = LS.get("ns.msgs", {}); // mensajes por destinatario: msgs.dar = lo que Berny le dejó a Darlene
-const ui = { pinMsg: null, loveFoto: null, loveMsg: "", tableWho: settings.who, who: settings.who, calMonth: today().slice(0, 7), moneyMonth: today().slice(0, 7), semDay: dayIdx(today()), edit: null, lastRoute: "" };
+const ui = { dtipo: "debemos", abono: null, pinMsg: null, loveFoto: null, loveMsg: "", tableWho: settings.who, who: settings.who, calMonth: today().slice(0, 7), moneyMonth: today().slice(0, 7), semDay: dayIdx(today()), edit: null, lastRoute: "" };
 
 const saveSettings = () => LS.set("ns.settings", settings);
 const day = (i) => horario.days[i];
@@ -131,7 +134,7 @@ async function flush() {
   try {
     while (pending.length) {
       const k = pending[0];
-      const value = k === "config/horario" ? horario : k.startsWith("msg/") ? msgs[k.slice(4)] : entries[k];
+      const value = k === "config/horario" ? horario : k === "config/deudas" ? deudas : k.startsWith("msg/") ? msgs[k.slice(4)] : entries[k];
       if (value) await api("/api/data", { method: "PUT", body: JSON.stringify({ key: k, value }) });
       pending.shift();
       LS.set("ns.pending", pending);
@@ -157,6 +160,12 @@ async function pull() {
         if (!entries[k] || (v.u || 0) > (entries[k].u || 0)) { entries[k] = v; changed = true; }
       }
     }
+    const dd = await api("/api/data?key=config/deudas");
+    if (dd && dd.value && Array.isArray(dd.value.items)) {
+      const merged = mergeDeudas(deudas, dd.value);
+      if (merged.changed) { deudas = merged.doc; LS.set("ns.deudas", deudas); changed = true; }
+      if (merged.localNewer && !pending.includes("config/deudas")) { pending.push("config/deudas"); LS.set("ns.pending", pending); }
+    } else if (deudas.items.length && !pending.includes("config/deudas")) { pending.push("config/deudas"); LS.set("ns.pending", pending); }
     const h = await api("/api/data?key=config/horario");
     if (h && h.value && Array.isArray(h.value.days) && !pending.includes("config/horario") && (h.value.u || 0) > (horario.u || 0)) {
       horario = h.value; LS.set("ns.horario", horario); changed = true;
@@ -179,6 +188,35 @@ function softRender() {
   render(true);
 }
 
+// ------------------------------------------------------------ deudas
+function mergeDeudas(local, remote) {
+  const map = new Map(local.items.map((i) => [i.id, i]));
+  let changed = false, localNewer = false;
+  remote.items.forEach((r) => {
+    const l = map.get(r.id);
+    if (!l || (r.u || 0) > (l.u || 0)) { map.set(r.id, r); changed = true; }
+    else if ((l.u || 0) > (r.u || 0)) localNewer = true;
+  });
+  local.items.forEach((l) => { if (!remote.items.some((r) => r.id === l.id)) localNewer = true; });
+  return { doc: { items: [...map.values()], u: Math.max(local.u || 0, remote.u || 0) }, changed, localNewer };
+}
+function saveDeudas() { deudas.u = Date.now(); LS.set("ns.deudas", deudas); queue("config/deudas"); }
+const debtPaid = (d) => (d.abonos || []).reduce((s, a) => s + +a.monto, 0);
+const debtLeft = (d) => Math.max(0, +d.monto - debtPaid(d));
+function debtState(d) {
+  if (d.pagado || debtLeft(d) <= 0) return ["ok", "Pagado"];
+  if (!d.vence) return ["", "Sin fecha"];
+  const days = Math.round((parseYmd(d.vence) - parseYmd(today())) / 86400000);
+  if (days < 0) return ["bad", `Vencido hace ${-days} d`];
+  if (days === 0) return ["warn", "Vence hoy"];
+  if (days <= 3) return ["warn", `Vence en ${days} d`];
+  return ["", `Vence en ${days} d`];
+}
+const activeDebts = () => deudas.items.filter((d) => !d.del);
+function addMovement(date, who, tipo, cat, monto, concepto) {
+  const e = getE(date, who); e.money.push({ id: uid(), tipo, cat, monto, concepto }); saveE(date, who, e);
+}
+
 // ------------------------------------------------------------ navegación
 const ICONS = {
   hoy: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
@@ -186,9 +224,10 @@ const ICONS = {
   semana: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M4 14h16M10 4v16"/>',
   dinero: '<circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.6c-.5-.9-1.5-1.4-2.6-1.4-1.4 0-2.5.8-2.5 1.9s1.1 1.6 2.5 1.9 2.5.8 2.5 2-1.1 2-2.5 2c-1.1 0-2.1-.5-2.6-1.4M12 6.6v1.6M12 15.9v1.6"/>',
   guia: '<path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/>',
+  deudas: '<rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M3.5 10h17M7 14.5h4"/>',
   ajustes: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
 };
-const ROUTES = [["hoy", "Hoy"], ["agenda", "Agenda"], ["semana", "Semana"], ["dinero", "Dinero"], ["guia", "Guía"], ["ajustes", "Ajustes"]];
+const ROUTES = [["hoy", "Hoy"], ["agenda", "Agenda"], ["semana", "Semana"], ["dinero", "Dinero"], ["deudas", "Deudas"], ["guia", "Guía"], ["ajustes", "Ajustes"]];
 function buildNav() {
   $("#topnav").innerHTML = ROUTES.map(([k, l]) => `<a href="#${k}" data-r="${k}">${l}</a>`).join("");
   $("#botnav").innerHTML = ROUTES.map(([k, l]) => `<a href="#${k}" data-r="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]}</svg>${l}</a>`).join("");
@@ -206,6 +245,7 @@ function render(keepScroll) {
   else if (r === "dinero") v.innerHTML = viewDinero();
   else if (r === "guia") v.innerHTML = viewGuia();
   else if (r === "ajustes") v.innerHTML = viewAjustes();
+  else if (r === "deudas") v.innerHTML = viewDeudas();
   else v.innerHTML = viewHoy();
   after(r);
   if (keepScroll || r === ui.lastRoute) window.scrollTo(0, y); else window.scrollTo(0, 0);
@@ -230,6 +270,7 @@ function viewHoy() {
     ${loveSection()}
     <section><div class="sec-head"><h2>Ahora</h2><div class="meta">Hora <span id="clock">—</span></div></div>
       <div class="now" id="now"></div></section>
+    ${upcomingDebtsCard()}
     ${dayPanel(t, true)}
   </div>`;
 }
@@ -289,9 +330,9 @@ function tickNow() {
     const st = statusOf(who, i, m), nx = st.next;
     return `<article class="ncard" style="${vars(st.cur.c)}"><div class="top"><span class="pillhead">${WHO[who]}</span><span class="live"><i></i>en vivo</span></div>
       <div class="what"><i></i><span>${esc(st.cur.t)}</span></div>
-      <div class="left">Faltan ${durTxt(st.rem)}${st.cur.e ? ` · hasta las ${fmt(st.cur.e)}` : ""}</div>
+      <div class="left">${st.cur.s && st.cur.e ? `De ${fmt(st.cur.s)} a ${fmt(st.cur.e)} · ` : ""}faltan ${durTxt(st.rem)}</div>
       ${st.pct == null ? "" : `<div class="bar"><span style="width:${Math.round(st.pct * 100)}%"></span></div>`}
-      <div class="next">Sigue: <span class="t">${nx && nx.s ? (nx.tomorrow ? "mañana " : "") + fmt(nx.s) : ""}</span> · <b>${esc(nx ? nx.t : "")}</b></div></article>`;
+      <div class="next">Sigue: <span class="t">${nx && nx.s ? (nx.tomorrow ? "mañana " : "") + (nx.e ? rango(nx.s, nx.e) : fmt(nx.s)) : ""}</span> · <b>${esc(nx ? nx.t : "")}</b></div></article>`;
   };
   const w = toMin(d.wake), sl = toMin(d.sleep), dp = Math.max(0, Math.min(1, (m - w) / (sl - w)));
   el.innerHTML = card("dar") + card("el") +
@@ -312,7 +353,7 @@ function personPanel(date, who) {
     <div class="card"><h3>Checklist <small>${items.filter((i) => e.checks[i.id]).length} / ${items.length}</small></h3>
       <ul class="checks">${items.map((i) => {
         const cur = isToday && m >= toMin(i.s) && m < toMin(i.e);
-        return `<li><label style="${vars(i.c)}${cur ? ";background:rgba(239,157,182,.08)" : ""}"><input type="checkbox" data-act="check" data-who="${who}" data-id="${esc(i.id)}" ${e.checks[i.id] ? "checked" : ""}><span class="tm">${fmt(i.s).replace(" ", " ")}</span><span class="tx"><i></i>${esc(i.t)}</span></label></li>`;
+        return `<li><label style="${vars(i.c)}${cur ? ";background:rgba(239,157,182,.08)" : ""}"><input type="checkbox" data-act="check" data-who="${who}" data-id="${esc(i.id)}" ${e.checks[i.id] ? "checked" : ""}><span class="tm">${fmtS(i.s)}–${fmt(i.e)}</span><span class="tx"><i></i>${esc(i.t)}</span></label></li>`;
       }).join("") || '<li class="empty">Sin bloques en el horario de este día.</li>'}</ul>
       <div class="field"><label>Comidas</label><div class="meals">${MEALS.map((mm, k) => `<button type="button" data-act="meal" data-who="${who}" data-i="${k}" aria-pressed="${e.meals[k] ? "true" : "false"}">${mm}</button>`).join("")}</div></div>
       <ul class="checks">${HABITS.map(([k, l]) => `<li><label class="nt"><input type="checkbox" data-act="habit" data-who="${who}" data-k="${k}" ${e.habits[k] ? "checked" : ""}><span class="tx">${l}</span></label></li>`).join("")}</ul>
@@ -376,9 +417,10 @@ function viewAgenda() {
         <span class="num">${+dt.slice(8)}<em>${hasVenta(d) ? "venta" : "libre"}</em></span>
         <span class="pb">D<div><span style="width:${pD || 0}%"></span></div></span><span class="pb">B<div><span style="width:${pE || 0}%"></span></div></span>
         ${m.ing || m.egr ? `<span class="net ${m.net >= 0 ? "pos" : "neg"}">${m.net >= 0 ? "+" : "−"}${money(Math.abs(m.net)).replace(".00", "")}</span>` : ""}
+        ${activeDebts().some((x) => !x.pagado && debtLeft(x) > 0 && x.vence === dt) ? '<span class="due" title="Fecha límite de pago">$</span>' : ""}
         ${hasNote ? '<span class="dot" title="Tiene notas"></span>' : ""}</a>`;
     }).join("")}</div></div>
-    <p class="sub">Toca un día para registrar el checklist, el dinero y las notas de cada uno. Barras: avance de Darlene (D) y de Berny (B). Punto lila: hay notas.</p>
+    <p class="sub">Toca un día para registrar el checklist, el dinero y las notas de cada uno. Barras: avance de Darlene (D) y de Berny (B). Punto lila: hay notas. $: fecha límite de un pago.</p>
     <div class="tiles"><div class="tile ing"><small>Ingresos del mes</small><b>${money(mo.ing)}</b></div><div class="tile egr"><small>Egresos del mes</small><b>${money(mo.egr)}</b></div>
       <div class="tile"><small>Neto</small><b>${money(mo.net)}</b></div><div class="tile"><small>Días registrados</small><b>${registrados} / ${dates.length}</b></div></div>
   </section></div>`;
@@ -424,7 +466,6 @@ function tickGrid() {
 }
 function hourTable() {
   const who = ui.tableWho, ti = dayIdx(today()), nm = nowMin();
-  const fmtS = (t) => fmt(t).replace(" am", "").replace(" pm", "");
   const vis = (b) => who === "ambos" || b.w === "ambos" || b.w === who;
   let first = 24, last = 0;
   horario.days.forEach((d) => { first = Math.min(first, Math.floor(toMin(d.wake) / 60)); last = Math.max(last, Math.ceil(toMin(d.sleep) / 60)); });
@@ -448,7 +489,8 @@ function hourTable() {
         const starts = b.s && toMin(b.s) >= hs;
         const chip = who === "ambos" && b.w && b.w !== "ambos" ? `<em class="wc">${b.w === "dar" ? "D" : "B"}</em>` : "";
         const sub = b.c === "escuela" && b.n && starts ? `<small>${esc(b.n)}</small>` : "";
-        return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"}" style="${vars(b.c)}"><i></i><span class="hm">${starts ? fmtS(b.s) : b.c === "sueno" ? "" : "sigue"}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div>`;
+        const when = b.c === "sueno" ? (b.s ? "desde " + fmt(b.s) : "") : starts ? rango(b.s, b.e) : "sigue · hasta " + fmt(b.e);
+        return `<div class="ln ${starts || b.c === "sueno" ? "" : "cont"}" style="${vars(b.c)}"><i></i><div><span class="hm">${when}</span><span class="tt">${chip}${esc(b.t)}${sub}</span></div></div>`;
       }).join("");
       return `<td class="hc ${i === ti ? "today" : ""} ${isNow ? "now" : ""}" style="${vars(dom)}">${html}</td>`;
     }).join("");
@@ -608,6 +650,64 @@ function viewGuia() {
   <footer><span class="motto">Disciplina hoy, resultados mañana</span></footer></div>`;
 }
 
+// ------------------------------------------------------------ vista: DEUDAS
+function debtRow(d) {
+  const [cls, label] = debtState(d), paid = debtPaid(d), left = debtLeft(d), pct = d.monto ? Math.min(100, Math.round((paid / d.monto) * 100)) : 0;
+  const open = ui.abono === d.id;
+  return `<li class="debt ${cls}">
+    <div class="dtop"><span class="pill ${cls}">${label}</span><span class="tag ${d.tipo === "debemos" ? "egreso" : "ingreso"}">${d.tipo === "debemos" ? "Debemos" : "Nos deben"}</span>
+      <b class="dc">${esc(d.concepto)}</b><span class="amt">${money(left)}<small> de ${money(d.monto)}</small></span></div>
+    <div class="bar"><span style="width:${pct}%"></span></div>
+    <div class="dmeta">${d.persona ? `<span>${d.tipo === "debemos" ? "A" : "De"}: <b>${esc(d.persona)}</b></span>` : ""}
+      ${d.vence ? `<span>Fecha límite: <b>${esc(longDate(d.vence))}</b></span>` : ""}<span>Responsable: <b>${WHO_OPTS[d.quien] || "Los dos"}</b></span>
+      ${d.nota ? `<span>${esc(d.nota)}</span>` : ""}</div>
+    ${(d.abonos || []).length ? `<ul class="abonos">${d.abonos.map((a) => `<li><span>${esc(longDate(a.fecha))}</span><span>${WHO[a.quien] || ""}</span><b>${money(a.monto)}</b></li>`).join("")}</ul>` : ""}
+    ${d.pagado || left <= 0 ? `<div class="row2"><button class="btn sm ghost" type="button" data-act="ddel" data-id="${d.id}">Quitar de la lista</button></div>`
+      : open ? `<form class="row2" data-form="abono" data-id="${d.id}"><div class="field"><label for="ab-${d.id}">Monto del ${d.tipo === "debemos" ? "pago" : "cobro"}</label><input id="ab-${d.id}" type="number" name="monto" inputmode="decimal" min="0" step="0.5" value="${left}" required></div>
+          <label class="chk"><input type="checkbox" name="mov" checked> Anotarlo en Dinero de hoy</label>
+          <button class="btn primary sm" type="submit">Guardar</button><button class="btn sm" type="button" data-act="dcancel">Cancelar</button></form>`
+      : `<div class="row2"><button class="btn sm primary" type="button" data-act="dabono" data-id="${d.id}">${d.tipo === "debemos" ? "Registrar pago" : "Registrar cobro"}</button>
+          <button class="btn sm" type="button" data-act="dpagado" data-id="${d.id}">Marcar como liquidado</button><button class="btn sm ghost" type="button" data-act="ddel" data-id="${d.id}">Borrar</button></div>`}
+  </li>`;
+}
+function viewDeudas() {
+  const all = activeDebts();
+  const pend = all.filter((d) => !d.pagado && debtLeft(d) > 0).sort((a, b) => (a.vence || "9999").localeCompare(b.vence || "9999"));
+  const done = all.filter((d) => d.pagado || debtLeft(d) <= 0);
+  const sum = (arr) => arr.reduce((s, d) => s + debtLeft(d), 0);
+  const deb = pend.filter((d) => d.tipo === "debemos"), nos = pend.filter((d) => d.tipo !== "debemos");
+  const pronto = pend.filter((d) => ["warn", "bad"].includes(debtState(d)[0])).length;
+  const ym = today().slice(0, 7);
+  const pagadoMes = all.reduce((s, d) => s + (d.abonos || []).filter((a) => a.fecha.startsWith(ym) && d.tipo === "debemos").reduce((x, a) => x + +a.monto, 0), 0);
+  return `<div class="wrap"><section>
+    <div class="sec-head"><h2>Deudas y pagos</h2><div class="meta">Pendientes <span>${pend.length}</span></div></div>
+    <div class="tiles"><div class="tile egr"><small>Debemos</small><b>${money(sum(deb))}</b><span>${deb.length} pendientes</span></div>
+      <div class="tile ing"><small>Nos deben</small><b>${money(sum(nos))}</b><span>${nos.length} pendientes</span></div>
+      <div class="tile"><small>Vencidos o por vencer</small><b>${pronto}</b><span>En los próximos 3 días</span></div>
+      <div class="tile"><small>Pagado este mes</small><b>${money(pagadoMes)}</b></div></div>
+    <form class="card" data-form="deuda"><h3>Agregar deuda o pago pendiente</h3>
+      <div class="seg" role="group" aria-label="Tipo">${[["debemos", "Debemos pagar"], ["nosdeben", "Nos deben"]].map(([k, l]) => `<button type="button" data-act="dtipo" data-t="${k}" aria-pressed="${(ui.dtipo || "debemos") === k}">${l}</button>`).join("")}</div>
+      <div class="money-form">
+        <div class="field full"><label for="dc">Concepto</label><input id="dc" type="text" name="concepto" maxlength="80" required placeholder="Ej. Colegiatura, tarjeta, préstamo, renta…"></div>
+        <div class="field"><label for="dp">${(ui.dtipo || "debemos") === "debemos" ? "¿A quién?" : "¿Quién nos debe?"}</label><input id="dp" type="text" name="persona" maxlength="60" placeholder="Opcional"></div>
+        <div class="field"><label for="dm">Monto total</label><input id="dm" type="number" name="monto" inputmode="decimal" min="0" step="0.5" required placeholder="0.00"></div>
+        <div class="field"><label for="dv">Fecha límite</label><input id="dv" type="date" name="vence"></div>
+        <div class="field"><label for="dq">Responsable</label><select id="dq" name="quien">${Object.entries(WHO_OPTS).map(([k, v]) => `<option value="${k}" ${k === "ambos" ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+        <div class="field full"><label for="dn">Nota (opcional)</label><input id="dn" type="text" name="nota" maxlength="140" placeholder="Ej. pagar en 3 partes, número de cuenta…"></div>
+        <button class="btn primary full" type="submit">Agregar</button>
+      </div></form>
+    <div class="card"><h3>Pendientes <small>ordenados por fecha límite</small></h3>
+      <ul class="debts">${pend.map(debtRow).join("") || '<li class="empty">Sin deudas pendientes. 🎉</li>'}</ul></div>
+    ${done.length ? `<div class="card"><h3>Liquidados <small>${done.length}</small></h3><ul class="debts">${done.map(debtRow).join("")}</ul></div>` : ""}
+  </section></div>`;
+}
+function upcomingDebtsCard() {
+  const soon = activeDebts().filter((d) => !d.pagado && debtLeft(d) > 0 && d.vence && (parseYmd(d.vence) - parseYmd(today())) / 86400000 <= 7)
+    .sort((a, b) => a.vence.localeCompare(b.vence));
+  if (!soon.length) return "";
+  return `<div class="card"><h3>Pagos próximos <small><a href="#deudas" style="color:var(--rose-2)">Ver deudas</a></small></h3><ul class="moves">${soon.map((d) => { const [c, l] = debtState(d); return `<li><span class="pill ${c}">${l}</span><span>${esc(d.concepto)}${d.persona ? `<br><span class="sub2">${d.tipo === "debemos" ? "A" : "De"} ${esc(d.persona)}</span>` : ""}</span><span class="amt ${d.tipo === "debemos" ? "egreso" : "ingreso"}">${money(debtLeft(d))}</span><span></span></li>`; }).join("")}</ul></div>`;
+}
+
 // ------------------------------------------------------------ vista: AJUSTES
 function viewAjustes() {
   const calWho = settings.calWho || settings.who;
@@ -668,6 +768,11 @@ document.addEventListener("click", async (ev) => {
   if (act === "who") { ui.who = who; return render(true); }
   if (act === "cal") { ui.calMonth = +t.dataset.n === 0 ? today().slice(0, 7) : shiftMonth(ui.calMonth, +t.dataset.n); render(true); return pull(); }
   if (act === "mon") { ui.moneyMonth = shiftMonth(ui.moneyMonth, +t.dataset.n); render(true); return pull(); }
+  if (act === "dtipo") { ui.dtipo = t.dataset.t; return render(true); }
+  if (act === "dabono") { ui.abono = t.dataset.id; return render(true); }
+  if (act === "dcancel") { ui.abono = null; return render(true); }
+  if (act === "dpagado") { const d = deudas.items.find((x) => x.id === t.dataset.id); if (d) { d.pagado = true; d.u = Date.now(); saveDeudas(); } return render(true); }
+  if (act === "ddel") { const d = deudas.items.find((x) => x.id === t.dataset.id); if (d) { d.del = true; d.u = Date.now(); saveDeudas(); } return render(true); }
   if (act === "tablewho") { ui.tableWho = t.dataset.w; return render(true); }
   if (act === "lovenofoto") { ui.loveFoto = null; return render(true); }
   if (act === "semday") { ui.semDay = +t.dataset.i; ui.edit = null; return render(true); }
@@ -682,9 +787,9 @@ document.addEventListener("click", async (ev) => {
   if (act === "me") { settings.who = who; ui.who = who; ui.tableWho = who; settings.calWho = who; saveSettings(); return render(true); }
   if (act === "copycal") { try { await navigator.clipboard.writeText(t.dataset.url); $("#calmsg").textContent = "Enlace copiado."; } catch (e) { $("#calmsg").textContent = t.dataset.url; } return; }
   if (act === "dlics") { const w = settings.calWho || settings.who; download(`nuestra-semana-${w}.ics`, buildICS(horario, w, settings.calModo, WHO[w]), "text/calendar"); $("#calmsg").textContent = "Abre el archivo descargado para agregar los eventos."; return; }
-  if (act === "backup") { download(`nuestra-semana-respaldo-${today()}.json`, JSON.stringify({ app: "nuestra-semana", v: 1, entries, horario, todoDone, msgs }, null, 1), "application/json"); $("#bkmsg").textContent = "Respaldo descargado."; return; }
+  if (act === "backup") { download(`nuestra-semana-respaldo-${today()}.json`, JSON.stringify({ app: "nuestra-semana", v: 1, entries, horario, todoDone, msgs, deudas }, null, 1), "application/json"); $("#bkmsg").textContent = "Respaldo descargado."; return; }
   if (act === "wipe") { $("#wconfirm").classList.add("on"); return; }
-  if (act === "wipeok") { entries = {}; pending = []; horario = clone(window.HORARIO_BASE); todoDone = []; msgs = {}; ["ns.entries", "ns.pending", "ns.horario", "ns.todo", "ns.msgs"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); render(true); return pull(); }
+  if (act === "wipeok") { entries = {}; pending = []; horario = clone(window.HORARIO_BASE); todoDone = []; msgs = {}; deudas = { items: [], u: 0 }; ["ns.entries", "ns.pending", "ns.horario", "ns.todo", "ns.msgs", "ns.deudas"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} }); render(true); return pull(); }
   if (act === "copysum") {
     const ym = ui.moneyMonth, mo = moneyOf(monthDates(ym));
     const txt = `Nuestra semana · ${monthName(ym)}\nIngresos: ${money(mo.ing)}\nEgresos: ${money(mo.egr)}\nNeto: ${money(mo.net)}`;
@@ -715,6 +820,7 @@ document.addEventListener("change", (ev) => {
       if (d.horario && Array.isArray(d.horario.days) && (d.horario.u || 0) > (horario.u || 0)) { horario = d.horario; LS.set("ns.horario", horario); queue("config/horario"); }
       if (Array.isArray(d.todoDone)) { todoDone = d.todoDone; LS.set("ns.todo", todoDone); }
       if (d.msgs && typeof d.msgs === "object") { msgs = Object.assign({}, msgs, d.msgs); LS.set("ns.msgs", msgs); }
+      if (d.deudas && Array.isArray(d.deudas.items)) { deudas = mergeDeudas(deudas, d.deudas).doc; LS.set("ns.deudas", deudas); queue("config/deudas"); }
       LS.set("ns.entries", entries); render(true); $("#bkmsg").textContent = "Respaldo restaurado.";
     }).catch((e) => { $("#bkmsg").textContent = e.message || "No se pudo leer el archivo."; });
   }
@@ -733,6 +839,26 @@ document.addEventListener("submit", async (ev) => {
   if (!f) return;
   ev.preventDefault();
   const fd = new FormData(f), who = f.dataset.who, date = peopleDate(f);
+  if (f.dataset.form === "deuda") {
+    const monto = Math.round(parseFloat(fd.get("monto")) * 100) / 100;
+    const concepto = String(fd.get("concepto") || "").trim();
+    if (!(monto > 0) || !concepto) return;
+    deudas.items.push({ id: uid(), tipo: ui.dtipo || "debemos", concepto, persona: String(fd.get("persona") || "").trim(), monto, vence: String(fd.get("vence") || ""),
+      quien: fd.get("quien") || "ambos", nota: String(fd.get("nota") || "").trim(), abonos: [], pagado: false, u: Date.now() });
+    saveDeudas(); return render(true);
+  }
+  if (f.dataset.form === "abono") {
+    const d = deudas.items.find((x) => x.id === f.dataset.id); if (!d) return;
+    const monto = Math.round(parseFloat(fd.get("monto")) * 100) / 100; if (!(monto > 0)) return;
+    d.abonos = d.abonos || []; d.abonos.push({ id: uid(), monto, fecha: today(), quien: settings.who });
+    if (debtLeft(d) <= 0) d.pagado = true;
+    d.u = Date.now(); saveDeudas();
+    if (fd.get("mov")) {
+      const quien = d.quien === "ambos" ? settings.who : d.quien;
+      addMovement(today(), quien, d.tipo === "debemos" ? "egreso" : "ingreso", d.tipo === "debemos" ? "Pago de deuda" : "Cobro de deuda", monto, d.concepto + (d.persona ? " · " + d.persona : ""));
+    }
+    ui.abono = null; return render(true);
+  }
   if (f.dataset.form === "love") {
     const texto = String(fd.get("texto") || "").trim();
     if (!texto && !ui.loveFoto) { ui.loveMsg = ""; return; }
